@@ -1,0 +1,12 @@
+1. Database with patiens and personnel data
+Patient info should include:
+- Name, surname, date of birth;
+- Pasport/ID card info, health insurance data
+- Diseases (as Textarea)
+- Analysis results
+- Doctor(s)
+Personnel info:
+- Name;
+- Position;
+- Access (CRUD)
+- Patients (One to Many ?)
