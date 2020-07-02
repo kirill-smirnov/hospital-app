@@ -1,12 +1,51 @@
-1. Database with patiens and personnel data
+1. Database with patients and personnel data
+
 Patient info should include:
 - Name, surname, date of birth;
-- Pasport/ID card info, health insurance data
-- Diseases (as Textarea)
+- Height, weight;
+- Passport/ID card info, health insurance data
+- Diseases (as Textarea) or DiseaseRecord entity
 - Analysis results
 - Doctor(s)
+- Appoinments (array of Appoinment)
 Personnel info:
 - Name;
 - Position;
 - Access (CRUD)
 - Patients (One to Many ?)
+- Schedule if position == doctor
+
+Disease Record:
+- Record (as Textarea)
+
+DoctorsSchedule:
+- Records (as array of Appoinment)
+// Cannot create new record if this doctor already has an appoinment in this time + 15 min.
+
+
+Appoinment:
+- Patient
+- Doctor
+- DateTime
+- Commentary
+
+1. Reception staff can:
+    CREATE Patient entity, add a medical appoinment to patient entity and doctor's schedule;
+    READ appoinments, doctors' schedules;
+    UPDATE appoinments
+    DELETE appoinments
+2. Nurse
+    CREATE DiseaseRecord;
+    READ patient's info;
+    UPDATE disease records;
+3. Doctor
+    CREATE DiseaseRecord;
+    READ patient's info;
+    UPDATE disease records;
+    DELETE disease records;
+
+Patient can
+    CREATE appoinments
+    READ his/her own info and own appoinments.
+    UPDATE appoinmets, for example change time and/or doctor
+    DELETE own appoinments
