@@ -1,4 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Core;
+using Core.Models;
+using System;
 
 namespace Tests
 {
@@ -6,8 +9,14 @@ namespace Tests
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestAppoinments()
         {
+            CreationManager cm = new CreationManager();
+
+            cm.CreatePatients();
+            cm.CreateDoctors();
+            cm.AttachPatientsAndDoctors();
+            cm.CreateAppoinments();
         }
     }
 }
