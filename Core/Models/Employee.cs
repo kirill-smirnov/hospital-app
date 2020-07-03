@@ -16,7 +16,7 @@ namespace Core.Models
     public class Doctor: Employee
     {
         // Position = Position.Doctor
-        public List<Patient> Patients { get; set; }
+        public List<Patient> Patients { get; set; } = new List<Patient>();
         public Schedule Schedule { get; set; }
 
         public void AddPatient(Patient patient)
