@@ -9,10 +9,10 @@ using System.Collections.Generic;
 namespace Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class CoreServicesTest
     {
         [TestMethod]
-        public void TestAppointments()
+        public void TestAppointmentCreation()
         {
             IDataAccessService data = new OfflineDataAccessService();
             IAppointmentService appointmentService = new AppointmentService(data);
