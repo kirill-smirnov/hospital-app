@@ -15,7 +15,7 @@ namespace Core.Models
         public List<DiseaseRecord> DiseaseRecords { get; set; }
         public List<Analysis> Analyses { get; set; }
         public Doctor Doctor { get; set; }
-        public List<Appoinment> Appoinments { get; set; }
+        public List<Appointment> Appointments { get; set; }
 
     }
 

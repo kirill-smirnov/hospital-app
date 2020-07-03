@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Models
 {
-    public class Appoinment
+    public class Appointment
     {
         public Patient Patient { get; set; }
         public Doctor Doctor { get; set; }
