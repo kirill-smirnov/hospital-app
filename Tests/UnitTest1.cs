@@ -2,6 +2,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Core;
 using Core.Models;
 using System;
+using Core.Services;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -9,14 +12,16 @@ namespace Tests
     public class UnitTest1
     {
         [TestMethod]
-        public void TestAppoinments()
+        public void TestAppointments()
         {
-            CreationManager cm = new CreationManager();
+            IDataAccessService data = new OfflineDataAccessService();
+            IAppointmentService appointmentService = new AppointmentService(data);
+            
+            Doctor doc = data.GetDoctors().ElementAt(1);
+            IEnumerable<Appointment> list = appointmentService.GetAppointments(doc);
 
-            cm.CreatePatients();
-            cm.CreateDoctors();
-            cm.AttachPatientsAndDoctors();
-            cm.CreateAppoinments();
+            foreach (var app in list)
+                Assert.AreEqual(app.Doctor, doc);
         }
     }
 }
