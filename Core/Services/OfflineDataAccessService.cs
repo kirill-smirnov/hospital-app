@@ -28,9 +28,12 @@ namespace Core.Services
 
             Appointments = (new List<Appointment>
             {
-                new Appointment {Patient = Patients.ElementAt(0), Doctor = Doctors.ElementAt(0), Time = DateTime.Now.AddDays(1)},
-                new Appointment {Patient = Patients.ElementAt(0), Doctor = Doctors.ElementAt(1), Time = DateTime.Now.AddDays(2)},
-                new Appointment {Patient = Patients.ElementAt(1), Doctor = Doctors.ElementAt(1), Time = DateTime.Now.AddDays(3)}
+                new Appointment {Patient = Patients.ElementAt(0), Doctor = Doctors.ElementAt(0), 
+                    Time = DateTime.Now.AddDays(1), Length = new TimeSpan(0, 15, 0)},
+                new Appointment {Patient = Patients.ElementAt(0), Doctor = Doctors.ElementAt(1),
+                    Time = DateTime.Now.AddDays(2), Length = new TimeSpan(0, 20, 0)},
+                new Appointment {Patient = Patients.ElementAt(1), Doctor = Doctors.ElementAt(1), 
+                    Time = DateTime.Now.AddDays(3), Length = new TimeSpan(0, 15, 0)}
             }).AsQueryable();
         }
 
