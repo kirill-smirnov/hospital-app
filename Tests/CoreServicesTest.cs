@@ -29,12 +29,27 @@ namespace Tests
         public void DoctorSortByBusynessTest()
         {
             var data = new Mock<IDataAccessService>();
+            data.Setup(a => a.GetDoctors())
+                .Returns((new List<Doctor> { 
+                    new Doctor {Name = "A"},
+                    new Doctor {Name = "B"}
+                }).AsQueryable());
+
+            data.Setup(a => a.GetAppointments())
+                .Returns((new List<Appointment>
+                {
+                    new Appointment { Doctor = data.Object.GetDoctors().ElementAt(0), Start = DateTime.Now, 
+                        End = DateTime.Now.AddMinutes(15)},
+                    new Appointment { Doctor = data.Object.GetDoctors().ElementAt(1), Start = DateTime.Now,
+                        End = DateTime.Now.AddMinutes(20)},
+                    new Appointment { Doctor = data.Object.GetDoctors().ElementAt(0), Start = DateTime.Now,
+                        End = DateTime.Now.AddMinutes(15)},
+                }).AsQueryable());
+
             IAppointmentService ds = new AppointmentService(data.Object);
 
-            data.Setup(a => a.GetDoctors()).Returns((IQueryable<Doctor>)ds.FindMoreFreeDoctors());
-
             Doctor doctor = ds.FindMoreFreeDoctors().ElementAt(0);
-            Doctor expected = data.Object.GetDoctors().ElementAt(0);
+            Doctor expected = data.Object.GetDoctors().ElementAt(1);
             Assert.AreEqual(expected, doctor);
         }
     }
