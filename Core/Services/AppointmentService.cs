@@ -17,5 +17,17 @@ namespace Core.Services
         {
             return DataAccessService.GetAppointments().Where(Appointment => Appointment.Doctor == doctor);
         }
+
+        public IEnumerable<Doctor> FindMoreFreeDoctors()
+        {
+            return DataAccessService.GetAppointments()
+                .GroupBy(appointment => appointment.Doctor)
+                .Select(grouping => new
+                {
+                    Doctor = grouping.Key,
+                    Length = grouping.Sum(app => (app.End - app.Start).Ticks)
+                }).OrderBy(app => app.Length)
+                .Select(app => app.Doctor);
+        }
     }
 }
