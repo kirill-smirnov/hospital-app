@@ -4,11 +4,7 @@ using System.Text;
 
 namespace Core.Services
 {
-    interface IEmployeeService
-    {
-    }
-
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService
     {
         protected IDataAccessService DataAccessService;
 
