@@ -9,6 +9,7 @@ namespace Core.Models
         public Patient Patient { get; set; }
         public Doctor Doctor { get; set; }
         public DateTime Time { get; set; }
+        public TimeSpan Length { get; set; }
         public string Commentary { get; set; }
     }
 }
