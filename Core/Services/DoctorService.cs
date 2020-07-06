@@ -20,7 +20,7 @@ namespace Core.Services
                 .Select(grouping => new
                 {
                     Doctor = grouping.Key,
-                    Length = grouping.Sum(app => app.Length.Ticks)
+                    Length = grouping.Sum(app => (app.End - app.Start).Ticks)
                 }).OrderBy(app => app.Length)
                 .Select(app => app.Doctor);
         }
