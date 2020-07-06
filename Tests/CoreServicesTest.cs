@@ -28,9 +28,9 @@ namespace Tests
         public void DoctorSortByBusynessTest()
         {
             IDataAccessService data = new OfflineDataAccessService();
-            DoctorService ds = new DoctorService(data);
+            IAppointmentService ds = new AppointmentService(data);
 
-            Doctor doctor = ds.SortDoctorsByBusyness().ElementAt(0);
+            Doctor doctor = ds.FindMoreFreeDoctors().ElementAt(0);
             Doctor expected = data.GetDoctors().ElementAt(0);
             Assert.AreEqual(expected, doctor);
         }

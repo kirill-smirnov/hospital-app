@@ -8,5 +8,7 @@ namespace Core.Services
     public interface IAppointmentService
     {
         IEnumerable<Appointment> GetAppointments(Doctor doctor);
+
+        IEnumerable<Doctor> FindMoreFreeDoctors();
     }
 }
