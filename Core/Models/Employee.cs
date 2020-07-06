@@ -10,7 +10,17 @@ namespace Core.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public Position Position { get; set; }
-       
+
+        public override bool Equals(object obj)
+        {
+            return obj is Employee employee &&
+                   Id == employee.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 
     public class Doctor: Employee

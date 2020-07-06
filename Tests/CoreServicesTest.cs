@@ -21,7 +21,7 @@ namespace Tests
             IEnumerable<Appointment> list = appointmentService.GetAppointments(doc);
 
             foreach (var app in list)
-                Assert.AreEqual(app.Doctor.GetHashCode(), doc.GetHashCode());
+                Assert.AreEqual(app.Doctor, doc);
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace Tests
 
             Doctor doctor = ds.SortDoctorsByBusyness().ElementAt(0);
             Doctor expected = data.GetDoctors().ElementAt(0);
-            Assert.AreEqual(expected.GetHashCode(), doctor.GetHashCode());
+            Assert.AreEqual(expected, doctor);
         }
     }
 }
