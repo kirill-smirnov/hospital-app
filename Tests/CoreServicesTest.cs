@@ -5,6 +5,7 @@ using System;
 using Core.Services;
 using System.Linq;
 using System.Collections.Generic;
+using Moq;
 
 namespace Tests
 {
@@ -27,11 +28,13 @@ namespace Tests
         [TestMethod]
         public void DoctorSortByBusynessTest()
         {
-            IDataAccessService data = new OfflineDataAccessService();
-            IAppointmentService ds = new AppointmentService(data);
+            var data = new Mock<IDataAccessService>();
+            IAppointmentService ds = new AppointmentService(data.Object);
+
+            data.Setup(a => a.GetDoctors()).Returns((IQueryable<Doctor>)ds.FindMoreFreeDoctors());
 
             Doctor doctor = ds.FindMoreFreeDoctors().ElementAt(0);
-            Doctor expected = data.GetDoctors().ElementAt(0);
+            Doctor expected = data.Object.GetDoctors().ElementAt(0);
             Assert.AreEqual(expected, doctor);
         }
     }
