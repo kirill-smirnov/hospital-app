@@ -28,12 +28,15 @@ namespace Core.Services
 
             Appointments = (new List<Appointment>
             {
-                new Appointment {Patient = Patients.ElementAt(0), Doctor = Doctors.ElementAt(0), 
-                    Start = DateTime.Now.AddDays(1), End = DateTime.Now.AddDays(1).AddMinutes(15)},
-                new Appointment {Patient = Patients.ElementAt(0), Doctor = Doctors.ElementAt(1),
-                    Start = DateTime.Now.AddDays(2), End = DateTime.Now.AddDays(2).AddMinutes(20)},
-                new Appointment {Patient = Patients.ElementAt(1), Doctor = Doctors.ElementAt(1), 
-                    Start = DateTime.Now.AddDays(3), End = DateTime.Now.AddDays(3).AddMinutes(15)}
+                new Appointment {Id = Guid.NewGuid().ToString(), Patient = Patients.ElementAt(0), 
+                    Doctor = Doctors.ElementAt(0), Start = DateTime.Now.AddDays(1), 
+                    End = DateTime.Now.AddDays(1).AddMinutes(15)},
+                new Appointment {Id = Guid.NewGuid().ToString(), Patient = Patients.ElementAt(0),
+                    Doctor = Doctors.ElementAt(1), Start = DateTime.Now.AddDays(2), 
+                    End = DateTime.Now.AddDays(2).AddMinutes(20)},
+                new Appointment {Id = Guid.NewGuid().ToString(), Patient = Patients.ElementAt(1), 
+                    Doctor = Doctors.ElementAt(1), Start = DateTime.Now.AddDays(3), 
+                    End = DateTime.Now.AddDays(3).AddMinutes(15)}
             }).AsQueryable();
         }
         public IQueryable<Appointment> GetAppointments()
@@ -65,6 +68,11 @@ namespace Core.Services
                 return;
 
             appToUpdate = appointment;
+        }
+
+        public void DeleteAppointment(Appointment appointment)
+        {
+            Appointments = Appointments.Where(app => app != appointment);
         }
     }
 }
