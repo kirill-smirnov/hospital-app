@@ -6,6 +6,7 @@ namespace Core.Models
 {
     public class Appointment
     {
+        public string Id { get; set; }
         public Patient Patient { get; set; }
         public Doctor Doctor { get; set; }
         public DateTime Start { get; set; }
