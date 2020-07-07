@@ -32,14 +32,5 @@ namespace Core.Services
                 }).OrderBy(app => app.Length)
                 .Select(app => app.Doctor);
         }
-        public void UpdateAppointment(Appointment appointment)
-        {
-            DataAccessService.UpdateAppointment(appointment);
-        }
-
-        public void DeleteAppointment(Appointment appointment)
-        {
-            DataAccessService.DeleteAppointment(appointment);
-        }
     }
 }
