@@ -15,44 +15,33 @@ namespace Tests
         [TestMethod]
         public void AppointmentCreationTest()
         {
-            IDataAccessService data = new OfflineDataAccessService();
-            IAppointmentService appointmentService = new AppointmentService(data);
+            var dataAccessServiceMock = MockDataAccessFactory.GetMock();
+            var dataAccessService = dataAccessServiceMock.Object;
 
-            Doctor doc = data.GetDoctors().ElementAt(1);
-            IEnumerable<Appointment> list = appointmentService.GetAppointments(doc);
+            IAppointmentService appointmentService = new AppointmentService(dataAccessService);
+
+            Doctor expectedDoc = dataAccessService.GetDoctors().First(d => d.Name == "B");
+            IEnumerable<Appointment> list = appointmentService.GetAppointments(expectedDoc);
 
             foreach (var app in list)
-                Assert.AreEqual(app.Doctor, doc);
+            {
+                Assert.AreEqual("B", app.Doctor.Name);
+            }
         }
 
         [TestMethod]
         public void DoctorSortByBusynessTest()
         {
-            var data = new Mock<IDataAccessService>();
-            data.Setup(a => a.GetDoctors())
-                .Returns((new List<Doctor> { 
-                    new Doctor {Name = "A"},
-                    new Doctor {Name = "B"}
-                }).AsQueryable());
+            var dataAccessServiceMock = MockDataAccessFactory.GetMock();
+            var dataAccessService = dataAccessServiceMock.Object;
 
-            data.Setup(a => a.GetAppointments())
-                .Returns((new List<Appointment>
-                {
-                    new Appointment { Doctor = data.Object.GetDoctors().ElementAt(0), Start = DateTime.Now, 
-                        End = DateTime.Now.AddMinutes(15)},
-                    new Appointment { Doctor = data.Object.GetDoctors().ElementAt(1), Start = DateTime.Now,
-                        End = DateTime.Now.AddMinutes(20)},
-                    new Appointment { Doctor = data.Object.GetDoctors().ElementAt(0), Start = DateTime.Now,
-                        End = DateTime.Now.AddMinutes(15)},
-                }).AsQueryable());
+            var appointmentService = new AppointmentService(dataAccessService);
 
-            IAppointmentService ds = new AppointmentService(data.Object);
-
-            Doctor doctor = ds.FindMoreFreeDoctors().ElementAt(0);
-            Doctor expected = data.Object.GetDoctors().ElementAt(1);
-            Assert.AreEqual(expected, doctor);
+            var foundDoctors = appointmentService.FindMoreFreeDoctors().ToList();
+            Assert.AreEqual(foundDoctors.Count(), 2);
+            Assert.AreEqual(foundDoctors[0].Name, "B");
+            Assert.AreEqual(foundDoctors[1].Name, "A");
         }
-
 
         [TestMethod]
         public void UpdateAppointmentTest()
@@ -63,7 +52,7 @@ namespace Tests
             var appToUpdate = dataAccessService.GetAppointments().ElementAt(0);
 
             appToUpdate.Doctor = doctor;
-            appointmentService.UpdateAppointment(appToUpdate);
+            dataAccessService.UpdateAppointment(appToUpdate);
 
             var appAfterUpdate = dataAccessService.GetAppointment(appToUpdate.Id);
             Assert.AreEqual(appAfterUpdate.Doctor.Name, doctor.Name);
@@ -78,10 +67,10 @@ namespace Tests
             var appToDelete = dataAccessService.GetAppointments().ElementAt(0);
             var appId = appToDelete.Id;
 
-            appointmentService.DeleteAppointment(appToDelete);
+            dataAccessService.DeleteAppointment(appToDelete);
 
             var appointmentsAfterDelete = dataAccessService.GetAppointments();
-            Assert.AreEqual(appointmentCount-1, appointmentsAfterDelete.Count());
+            Assert.AreEqual(appointmentCount - 1, appointmentsAfterDelete.Count());
             CollectionAssert.DoesNotContain(appointmentsAfterDelete.ToList(), appToDelete);
         }
     }
