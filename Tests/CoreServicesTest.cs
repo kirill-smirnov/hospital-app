@@ -52,5 +52,21 @@ namespace Tests
             Doctor expected = data.Object.GetDoctors().ElementAt(1);
             Assert.AreEqual(expected, doctor);
         }
+
+
+        [TestMethod]
+        public void UpdateAppointmentTest()
+        {
+            var dataAccessService = new OfflineDataAccessService();
+            var appointmentService = new AppointmentService(dataAccessService);
+            var doctor = new Doctor { Name = "A" };
+            var appToUpdate = dataAccessService.GetAppointments().ElementAt(0);
+
+            appToUpdate.Doctor = doctor;
+            appointmentService.UpdateAppointment(appToUpdate);
+
+            var appAfterUpdate = dataAccessService.GetAppointment(appToUpdate.Id);
+            Assert.AreEqual(appAfterUpdate.Doctor.Name, doctor.Name);
+        }
     }
 }

@@ -13,11 +13,14 @@ namespace Core.Services
         {
             DataAccessService = service;
         }        
-        IEnumerable<Appointment> IAppointmentService.GetAppointments(Doctor doctor)
+        public IEnumerable<Appointment> GetAppointments(Doctor doctor)
         {
-            return DataAccessService.GetAppointments().Where(Appointment => Appointment.Doctor == doctor);
+            return DataAccessService.GetAppointments().Where(appointment => appointment.Doctor == doctor);
         }
-
+        public IEnumerable<Appointment> GetAppointments(Patient patient)
+        {
+            return DataAccessService.GetAppointments().Where(appointment => appointment.Patient == patient);
+        }
         public IEnumerable<Doctor> FindMoreFreeDoctors()
         {
             return DataAccessService.GetAppointments()
@@ -28,6 +31,10 @@ namespace Core.Services
                     Length = grouping.Sum(app => (app.End - app.Start).Ticks)
                 }).OrderBy(app => app.Length)
                 .Select(app => app.Doctor);
+        }
+        public void UpdateAppointment(Appointment appointment)
+        {
+            DataAccessService.UpdateAppointment(appointment);
         }
     }
 }

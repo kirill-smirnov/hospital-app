@@ -36,11 +36,16 @@ namespace Core.Services
                     Start = DateTime.Now.AddDays(3), End = DateTime.Now.AddDays(3).AddMinutes(15)}
             }).AsQueryable();
         }
-
         public IQueryable<Appointment> GetAppointments()
         {
             return Appointments;
         }
+
+        public Appointment GetAppointment(string id)
+        {
+            return Appointments.FirstOrDefault(app => app.Id == id);
+        }
+
         public IQueryable<Doctor> GetDoctors()
         {
             return Doctors;
@@ -50,6 +55,16 @@ namespace Core.Services
         {
             return Patients;
 
+        }
+
+        public void UpdateAppointment(Appointment appointment)
+        {
+            var appToUpdate = GetAppointment(appointment.Id);
+
+            if (appToUpdate == null)
+                return;
+
+            appToUpdate = appointment;
         }
     }
 }
