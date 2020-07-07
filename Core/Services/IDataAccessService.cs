@@ -12,5 +12,6 @@ namespace Core
         IQueryable<Appointment> GetAppointments();
         Appointment GetAppointment(string id);
         void UpdateAppointment(Appointment appointment);
+        void DeleteAppointment(Appointment appointment);
     }
 }

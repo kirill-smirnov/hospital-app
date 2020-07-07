@@ -36,5 +36,10 @@ namespace Core.Services
         {
             DataAccessService.UpdateAppointment(appointment);
         }
+
+        public void DeleteAppointment(Appointment appointment)
+        {
+            DataAccessService.DeleteAppointment(appointment);
+        }
     }
 }

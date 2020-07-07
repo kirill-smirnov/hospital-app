@@ -68,5 +68,21 @@ namespace Tests
             var appAfterUpdate = dataAccessService.GetAppointment(appToUpdate.Id);
             Assert.AreEqual(appAfterUpdate.Doctor.Name, doctor.Name);
         }
+
+        [TestMethod]
+        public void DeleteAppointmentTest()
+        {
+            var dataAccessService = new OfflineDataAccessService();
+            var appointmentService = new AppointmentService(dataAccessService);
+            int appointmentCount = dataAccessService.GetAppointments().Count();
+            var appToDelete = dataAccessService.GetAppointments().ElementAt(0);
+            var appId = appToDelete.Id;
+
+            appointmentService.DeleteAppointment(appToDelete);
+
+            var appointmentsAfterDelete = dataAccessService.GetAppointments();
+            Assert.AreEqual(appointmentCount-1, appointmentsAfterDelete.Count());
+            CollectionAssert.DoesNotContain(appointmentsAfterDelete.ToList(), appToDelete);
+        }
     }
 }
