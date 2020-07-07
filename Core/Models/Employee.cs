@@ -9,7 +9,13 @@ namespace Core.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
+
         public Position Position { get; set; }
+
+        public Employee()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
 
         public override bool Equals(object obj)
         {
@@ -26,7 +32,7 @@ namespace Core.Models
     public class Doctor: Employee
     {
         // Position = Position.Doctor
-        public Doctor()
+        public Doctor() : base()
         {
             Position = Position.Doctor;
         }

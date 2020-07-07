@@ -13,6 +13,11 @@ namespace Core.Models
         public DateTime End { get; set; }
         public string Commentary { get; set; }
 
+        public Appointment()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public override bool Equals(object obj)
         {
             return obj is Appointment appointment &&

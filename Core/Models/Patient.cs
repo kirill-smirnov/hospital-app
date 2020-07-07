@@ -17,6 +17,10 @@ namespace Core.Models
         public Doctor Doctor { get; set; }
         public List<Appointment> Appointments { get; set; }
 
+        public Patient()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 
     public class DiseaseRecord
