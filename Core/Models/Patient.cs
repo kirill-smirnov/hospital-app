@@ -21,6 +21,17 @@ namespace Core.Models
         {
             Id = Guid.NewGuid().ToString();
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Patient patient &&
+                   Id == patient.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 
     public class DiseaseRecord
