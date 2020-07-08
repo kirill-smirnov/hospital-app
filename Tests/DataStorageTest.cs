@@ -8,34 +8,33 @@ using System.Text;
 
 namespace Tests 
 {
-
     [TestClass]
-    public class DataAccessServiceTest
+    public class DataStorageTest
     {
         [TestMethod]
         public void UpdateAppointmentTest()
         {
-            var dataAccessService = new OfflineDataAccessService();
+            var dataStorage = new OfflineDataStorage();
             var doctor = new Doctor { Name = "A" };
-            var appToUpdate = dataAccessService.GetAppointments().ElementAt(0);
+            var appToUpdate = dataStorage.GetAppointments().ElementAt(0);
 
             appToUpdate.Doctor = doctor;
-            dataAccessService.UpdateAppointment(appToUpdate);
+            dataStorage.UpdateAppointment(appToUpdate);
 
-            var appAfterUpdate = dataAccessService.GetAppointment(appToUpdate.Id);
+            var appAfterUpdate = dataStorage.GetAppointment(appToUpdate.Id);
             Assert.AreEqual(appAfterUpdate.Doctor.Name, doctor.Name);
         }
 
         [TestMethod]
         public void DeleteAppointmentTest()
         {
-            var dataAccessService = new OfflineDataAccessService();
-            int appointmentCount = dataAccessService.GetAppointments().Count();
-            var appToDelete = dataAccessService.GetAppointments().ElementAt(0);
+            var dataStorage = new OfflineDataStorage();
+            int appointmentCount = dataStorage.GetAppointments().Count();
+            var appToDelete = dataStorage.GetAppointments().ElementAt(0);
 
-            dataAccessService.DeleteAppointment(appToDelete);
+            dataStorage.DeleteAppointment(appToDelete);
 
-            var appointmentsAfterDelete = dataAccessService.GetAppointments();
+            var appointmentsAfterDelete = dataStorage.GetAppointments();
             Assert.AreEqual(appointmentCount - 1, appointmentsAfterDelete.Count());
             CollectionAssert.DoesNotContain(appointmentsAfterDelete.ToList(), appToDelete);
 

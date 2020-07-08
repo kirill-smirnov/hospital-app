@@ -15,13 +15,13 @@ namespace Tests
         [TestMethod]
         public void AppointmentGettersTest()
         {
-            var dataAccessServiceMock = MockDataAccessFactory.GetMock();
-            var dataAccessService = dataAccessServiceMock.Object;
+            var dataStorageMock = MockDataStorageFactory.GetMock();
+            var dataStorage = dataStorageMock.Object;
 
-            IAppointmentService appointmentService = new AppointmentService(dataAccessService);
+            IAppointmentService appointmentService = new AppointmentService(dataStorage);
 
-            Doctor expectedDoc = dataAccessService.GetDoctors().First(d => d.Name == "B");
-            Patient expectedPat = dataAccessService.GetPatients().First(p => p.Name == "1");
+            Doctor expectedDoc = dataStorage.GetDoctors().First(d => d.Name == "B");
+            Patient expectedPat = dataStorage.GetPatients().First(p => p.Name == "1");
             IEnumerable<Appointment> docList = appointmentService.GetAppointments(expectedDoc);
             IEnumerable<Appointment> patList = appointmentService.GetAppointments(expectedPat);
 
@@ -41,10 +41,10 @@ namespace Tests
         [TestMethod]
         public void DoctorSortByBusynessTest()
         {
-            var dataAccessServiceMock = MockDataAccessFactory.GetMock();
-            var dataAccessService = dataAccessServiceMock.Object;
+            var dataStorageMock = MockDataStorageFactory.GetMock();
+            var dataStorage = dataStorageMock.Object;
 
-            var appointmentService = new AppointmentService(dataAccessService);
+            var appointmentService = new AppointmentService(dataStorage);
 
             var foundDoctors = appointmentService.FindMoreFreeDoctors().ToList();
             Assert.AreEqual(foundDoctors.Count(), 2);

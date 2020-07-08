@@ -8,10 +8,9 @@ using System.Text;
 
 namespace Tests
 {
-    class MockDataAccessFactory
+    class MockDataStorageFactory
     {
-
-        public static Mock<IDataAccessService> GetMock()
+        public static Mock<IDataStorage> GetMock()
         {
             var doctors = new List<Doctor> {
                 new Doctor {Name = "A"},
@@ -32,12 +31,12 @@ namespace Tests
                     End = DateTime.Now.AddMinutes(15)},
             };
 
-            var dataAccessService = new Mock<IDataAccessService>();
-            dataAccessService.Setup(a => a.GetDoctors()).Returns(doctors.AsQueryable());
-            dataAccessService.Setup(a => a.GetPatients()).Returns(patients.AsQueryable());
-            dataAccessService.Setup(a => a.GetAppointments()).Returns(appointments.AsQueryable());
+            var dataStorage = new Mock<IDataStorage>();
+            dataStorage.Setup(a => a.GetDoctors()).Returns(doctors.AsQueryable());
+            dataStorage.Setup(a => a.GetPatients()).Returns(patients.AsQueryable());
+            dataStorage.Setup(a => a.GetAppointments()).Returns(appointments.AsQueryable());
 
-            return dataAccessService;
+            return dataStorage;
         }
     }
 }

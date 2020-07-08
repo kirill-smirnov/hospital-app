@@ -14,12 +14,12 @@ namespace App.Controllers
     [ApiController]
     public class AppointmentController : ControllerBase
     {
-        private readonly IDataAccessService DataAccessService;
+        private readonly IDataStorage DataStorage;
         private readonly IAppointmentService AppointmentService;
 
-        public AppointmentController(IDataAccessService dataAccessService, IAppointmentService appointmentService)
+        public AppointmentController(IDataStorage dataStorage, IAppointmentService appointmentService)
         {
-            DataAccessService = dataAccessService;
+            DataStorage = dataStorage;
             AppointmentService = appointmentService;
         }
 
@@ -28,7 +28,7 @@ namespace App.Controllers
         {
             var patient = appointment.Patient;
             patient.Appointments.Add(appointment);
-            DataAccessService.CreateAppointment(appointment);
+            DataStorage.CreateAppointment(appointment);
             return Ok(new { Message = "Success"});
         }
 
@@ -42,18 +42,18 @@ namespace App.Controllers
 
             if (!string.IsNullOrEmpty(doctorId))
             {
-                var doctor = DataAccessService.GetDoctors().FirstOrDefault(d => d.Id == doctorId);
+                var doctor = DataStorage.GetDoctors().FirstOrDefault(d => d.Id == doctorId);
                 query = AppointmentService.GetAppointments(doctor);
             }
 
             else if (!string.IsNullOrEmpty(patientId))
             {
-                var patient = DataAccessService.GetPatients().FirstOrDefault(p => p.Id == patientId);
+                var patient = DataStorage.GetPatients().FirstOrDefault(p => p.Id == patientId);
                 query = AppointmentService.GetAppointments(patient);
             }
 
             else
-                query = DataAccessService.GetAppointments();
+                query = DataStorage.GetAppointments();
 
             return query.Select(a => new { 
                 id = a.Id, patientId = a.Patient.Id, doctorId = a.Doctor.Id,
@@ -64,7 +64,7 @@ namespace App.Controllers
         [HttpPut("{id}")]
         public ActionResult<Appointment> UpdateAppointment(string id, Appointment appointment)
         {
-            DataAccessService.UpdateAppointment(appointment);
+            DataStorage.UpdateAppointment(appointment);
 
             return Ok(new { Message = "Success" });
         }
@@ -72,8 +72,8 @@ namespace App.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Appointment> DeleteAppointment(string id)
         {
-            var appointment = DataAccessService.GetAppointment(id);
-            DataAccessService.DeleteAppointment(appointment);
+            var appointment = DataStorage.GetAppointment(id);
+            DataStorage.DeleteAppointment(appointment);
 
             return Ok(new { Message = "Success" });
         }

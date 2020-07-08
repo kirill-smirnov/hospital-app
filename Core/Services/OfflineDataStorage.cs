@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Core.Services
 {
-    public class OfflineDataAccessService : IDataAccessService
+    public class OfflineDataStorage : IDataStorage
     {
         IQueryable<Patient> Patients;
         IQueryable<Doctor> Doctors;
         IQueryable<Appointment> Appointments;
 
-        public OfflineDataAccessService()
+        public OfflineDataStorage()
         {
             Patients = (new List<Patient>
             {

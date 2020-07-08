@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Core
 {
-    public interface IDataAccessService {
+    public interface IDataStorage {
         IQueryable<Patient> GetPatients();
         IQueryable<Doctor> GetDoctors();
         IQueryable<Appointment> GetAppointments();

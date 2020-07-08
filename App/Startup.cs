@@ -26,10 +26,10 @@ namespace App
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IDataAccessService, OfflineDataAccessService>();
+            services.AddSingleton<IDataStorage, OfflineDataStorage>();
             services.AddSingleton<IAppointmentService, AppointmentService>(serviceProvider =>
             {
-                return new AppointmentService(serviceProvider.GetService<IDataAccessService>());
+                return new AppointmentService(serviceProvider.GetService<IDataStorage>());
             });
             services.AddControllers();
 

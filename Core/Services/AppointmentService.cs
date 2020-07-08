@@ -8,22 +8,22 @@ namespace Core.Services
 {
     public class AppointmentService : IAppointmentService
     {
-        protected IDataAccessService DataAccessService { get; }
-        public AppointmentService(IDataAccessService service)
+        protected IDataStorage DataStorage { get; }
+        public AppointmentService(IDataStorage service)
         {
-            DataAccessService = service;
+            DataStorage = service;
         }        
         public IEnumerable<Appointment> GetAppointments(Doctor doctor)
         {
-            return DataAccessService.GetAppointments().Where(appointment => appointment.Doctor == doctor);
+            return DataStorage.GetAppointments().Where(appointment => appointment.Doctor == doctor);
         }
         public IEnumerable<Appointment> GetAppointments(Patient patient)
         {
-            return DataAccessService.GetAppointments().Where(appointment => appointment.Patient == patient);
+            return DataStorage.GetAppointments().Where(appointment => appointment.Patient == patient);
         }
         public IEnumerable<Doctor> FindMoreFreeDoctors()
         {
-            return DataAccessService.GetAppointments()
+            return DataStorage.GetAppointments()
                 .GroupBy(appointment => appointment.Doctor)
                 .Select(grouping => new
                 {
