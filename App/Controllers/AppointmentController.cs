@@ -23,23 +23,59 @@ namespace App.Controllers
             AppointmentService = appointmentService;
         }
 
+        [HttpPost]
+        public ActionResult<Appointment> CreateAppointment(Appointment appointment)
+        {
+            var patient = appointment.Patient;
+            patient.Appointments.Add(appointment);
+            DataAccessService.CreateAppointment(appointment);
+            return Ok(new { Message = "Success"});
+        }
+
         [HttpGet]
-        public IEnumerable<Appointment> Get()
+        public IEnumerable<object> GetAppointments()
         {
-            return DataAccessService.GetAppointments().AsEnumerable();
+            IEnumerable<Appointment> query;
+
+            string patientId = HttpContext.Request.Query["patientId"].ToString();
+            string doctorId = HttpContext.Request.Query["doctorId"].ToString();
+
+            if (!string.IsNullOrEmpty(doctorId))
+            {
+                var doctor = DataAccessService.GetDoctors().FirstOrDefault(d => d.Id == doctorId);
+                query = AppointmentService.GetAppointments(doctor);
+            }
+
+            else if (!string.IsNullOrEmpty(patientId))
+            {
+                var patient = DataAccessService.GetPatients().FirstOrDefault(p => p.Id == patientId);
+                query = AppointmentService.GetAppointments(patient);
+            }
+
+            else
+                query = DataAccessService.GetAppointments();
+
+            return query.Select(a => new { 
+                id = a.Id, patientId = a.Patient.Id, doctorId = a.Doctor.Id,
+                start = a.Start, end = a.End, commentary = a.Commentary
+            });
         }
-        [HttpGet("patient")]
-        public IEnumerable<Appointment> GetPatientAppts(string id)
+
+        [HttpPut("{id}")]
+        public ActionResult<Appointment> UpdateAppointment(string id, Appointment appointment)
         {
-            var patient = DataAccessService.GetPatients().FirstOrDefault(p => p.Id == id);
-            var appts = AppointmentService.GetAppointments(patient);
-            return appts;
+            DataAccessService.UpdateAppointment(appointment);
+
+            return Ok(new { Message = "Success" });
         }
-        [HttpGet("doctor")]
-        public IEnumerable<Appointment> GetDoctorAppts(string id)
+
+        [HttpDelete("{id}")]
+        public ActionResult<Appointment> DeleteAppointment(string id)
         {
-            var doctor = DataAccessService.GetDoctors().FirstOrDefault(d => d.Id == id);
-            return AppointmentService.GetAppointments(doctor);
+            var appointment = DataAccessService.GetAppointment(id);
+            DataAccessService.DeleteAppointment(appointment);
+
+            return Ok(new { Message = "Success" });
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Core
         IQueryable<Doctor> GetDoctors();
         IQueryable<Appointment> GetAppointments();
         Appointment GetAppointment(string id);
+        void CreateAppointment(Appointment appointment);
         void UpdateAppointment(Appointment appointment);
         void DeleteAppointment(Appointment appointment);
     }
