@@ -20,6 +20,7 @@ namespace Core.Models
         public Patient()
         {
             Id = Guid.NewGuid().ToString();
+            Appointments = new List<Appointment>();
         }
 
         public override bool Equals(object obj)
