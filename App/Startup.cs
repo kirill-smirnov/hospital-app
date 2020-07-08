@@ -9,6 +9,7 @@ using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using React.AspNet;
@@ -17,9 +18,19 @@ namespace App
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IDataAccessService, OfflineDataAccessService>();
+            services.AddSingleton<IAppointmentService, AppointmentService>(serviceProvider =>
+            {
+                return new AppointmentService(serviceProvider.GetService<IDataAccessService>());
+            });
             services.AddControllers();
 
             services.AddMemoryCache();
