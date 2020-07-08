@@ -23,6 +23,7 @@ namespace Tests
             Doctor expectedDoc = dataAccessService.GetDoctors().First(d => d.Name == "B");
             IEnumerable<Appointment> list = appointmentService.GetAppointments(expectedDoc);
 
+            Assert.AreEqual(1, list.Count());
             foreach (var app in list)
             {
                 Assert.AreEqual("B", app.Doctor.Name);
