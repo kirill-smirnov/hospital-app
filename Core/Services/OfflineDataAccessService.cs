@@ -54,10 +54,24 @@ namespace Core.Services
             return Doctors;
         }
 
+        public Doctor GetDoctor(string id)
+        {
+            return Doctors.FirstOrDefault(d => d.Id == id);
+        }
+
         public IQueryable<Patient> GetPatients()
         {
             return Patients;
+        }
 
+        public Patient GetPatient(string id)
+        {
+            return Patients.FirstOrDefault(p => p.Id == id);
+        }
+
+        public void CreateAppointment(Appointment appointment)
+        {
+            Appointments = Appointments.Concat(new List<Appointment> { appointment });
         }
 
         public void UpdateAppointment(Appointment appointment)
@@ -67,7 +81,7 @@ namespace Core.Services
             if (appToUpdate == null)
                 return;
 
-            appToUpdate = appointment;
+            Appointments = Appointments.Select(a => a == appToUpdate ? appointment : a);
         }
 
         public void DeleteAppointment(Appointment appointment)
