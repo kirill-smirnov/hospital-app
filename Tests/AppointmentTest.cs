@@ -13,7 +13,7 @@ namespace Tests
     public class AppointmentTest
     {
         [TestMethod]
-        public void AppointmentCreationTest()
+        public void AppointmentGettersTest()
         {
             var dataAccessServiceMock = MockDataAccessFactory.GetMock();
             var dataAccessService = dataAccessServiceMock.Object;
@@ -21,12 +21,20 @@ namespace Tests
             IAppointmentService appointmentService = new AppointmentService(dataAccessService);
 
             Doctor expectedDoc = dataAccessService.GetDoctors().First(d => d.Name == "B");
-            IEnumerable<Appointment> list = appointmentService.GetAppointments(expectedDoc);
+            Patient expectedPat = dataAccessService.GetPatients().First(p => p.Name == "1");
+            IEnumerable<Appointment> docList = appointmentService.GetAppointments(expectedDoc);
+            IEnumerable<Appointment> patList = appointmentService.GetAppointments(expectedPat);
 
-            Assert.AreEqual(1, list.Count());
-            foreach (var app in list)
+            Assert.AreEqual(1, docList.Count());
+            foreach (var app in docList)
             {
                 Assert.AreEqual("B", app.Doctor.Name);
+            }
+
+            Assert.AreEqual(2, patList.Count());
+            foreach (var app in patList)
+            {
+                Assert.AreEqual("1", app.Patient.Name);
             }
         }
 
