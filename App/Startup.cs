@@ -57,6 +57,7 @@ namespace App
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
+            app.UseCors(builder => builder.AllowAnyOrigin());
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
