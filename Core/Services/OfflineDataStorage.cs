@@ -39,16 +39,7 @@ namespace Core.Services
                     End = DateTime.Now.AddDays(3).AddMinutes(15)}
             }).AsQueryable();
         }
-        public IQueryable<Appointment> GetAppointments()
-        {
-            return Appointments;
-        }
-
-        public Appointment GetAppointment(string id)
-        {
-            return Appointments.FirstOrDefault(app => app.Id == id);
-        }
-
+ 
         public IQueryable<Doctor> GetDoctors()
         {
             return Doctors;
@@ -57,6 +48,26 @@ namespace Core.Services
         public Doctor GetDoctor(string id)
         {
             return Doctors.FirstOrDefault(d => d.Id == id);
+        }
+
+        public void CreateDoctor(Doctor doctor)
+        {
+            Doctors = Doctors.Concat(new List<Doctor> { doctor });
+        }
+
+        public void UpdateDoctor(Doctor doctor)
+        {
+            var docToUpdate = GetDoctor(doctor.Id);
+
+            if (docToUpdate == null)
+                return;
+
+            Doctors = Doctors.Select(d => d == docToUpdate ? doctor : d);
+        }
+
+        public void DeleteDoctor(Doctor doctor)
+        {
+            Doctors = Doctors.Where(d => d != doctor);
         }
 
         public IQueryable<Patient> GetPatients()
@@ -87,6 +98,16 @@ namespace Core.Services
         public void DeletePatient(Patient patient)
         {
             Patients = Patients.Where(p => p != patient);
+        }
+
+        public IQueryable<Appointment> GetAppointments()
+        {
+            return Appointments;
+        }
+
+        public Appointment GetAppointment(string id)
+        {
+            return Appointments.FirstOrDefault(app => app.Id == id);
         }
 
         public void CreateAppointment(Appointment appointment)

@@ -103,5 +103,47 @@ namespace Tests
             Assert.AreEqual(count - 1, patientsAfterDelete.Count());
             CollectionAssert.DoesNotContain(patientsAfterDelete.ToList(), patToDelete);
         }
+
+
+        [TestMethod]
+        public void CreateDoctorTest()
+        {
+            var dataStorage = new OfflineDataStorage();
+            int count = dataStorage.GetDoctors().Count();
+            var doctor = new Doctor { Name = "ABC" };
+
+            dataStorage.CreateDoctor(doctor);
+            var doctorsAfterCreate = dataStorage.GetDoctors();
+
+            Assert.AreEqual(count + 1, doctorsAfterCreate.Count());
+            Assert.AreEqual(doctor, doctorsAfterCreate.FirstOrDefault(d => d.Id == doctor.Id));
+        }
+
+        [TestMethod]
+        public void UpdateDoctorTest()
+        {
+            var dataStorage = new OfflineDataStorage();
+
+            var doctorToUpdate = dataStorage.GetDoctors().Last();
+
+            doctorToUpdate.Name = "QWERTY";
+
+            dataStorage.UpdateDoctor(doctorToUpdate);
+            Assert.AreEqual("QWERTY", dataStorage.GetDoctors().Last().Name);
+        }
+
+        [TestMethod]
+        public void DeleteDoctorTest()
+        {
+            var dataStorage = new OfflineDataStorage();
+            int count = dataStorage.GetDoctors().Count();
+            var docToDelete = dataStorage.GetDoctors().First();
+
+            dataStorage.DeleteDoctor(docToDelete);
+
+            var doctorsAfterDelete = dataStorage.GetDoctors();
+            Assert.AreEqual(count - 1, doctorsAfterDelete.Count());
+            CollectionAssert.DoesNotContain(doctorsAfterDelete.ToList(), docToDelete);
+        }
     }
 }

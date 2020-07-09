@@ -14,6 +14,9 @@ namespace Core
         void DeletePatient(Patient patient);
         IQueryable<Doctor> GetDoctors();
         Doctor GetDoctor(string id);
+        void CreateDoctor(Doctor doctor);
+        void UpdateDoctor(Doctor doctor);
+        void DeleteDoctor(Doctor doctor);
         IQueryable<Appointment> GetAppointments();
         Appointment GetAppointment(string id);
         void CreateAppointment(Appointment appointment);
