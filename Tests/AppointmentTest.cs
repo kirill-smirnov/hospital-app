@@ -18,12 +18,12 @@ namespace Tests
             var dataStorageMock = MockDataStorageFactory.GetMock();
             var dataStorage = dataStorageMock.Object;
 
-            IAppointmentService appointmentService = new AppointmentService(dataStorage);
+            IDataUtilsService dataUtilsService = new DataUtilsService(dataStorage);
 
             Doctor expectedDoc = dataStorage.GetDoctors().First(d => d.Name == "B");
             Patient expectedPat = dataStorage.GetPatients().First(p => p.Name == "1");
-            IEnumerable<Appointment> docList = appointmentService.GetAppointments(expectedDoc);
-            IEnumerable<Appointment> patList = appointmentService.GetAppointments(expectedPat);
+            IEnumerable<Appointment> docList = dataUtilsService.GetAppointments(expectedDoc);
+            IEnumerable<Appointment> patList = dataUtilsService.GetAppointments(expectedPat);
 
             Assert.AreEqual(1, docList.Count());
             foreach (var app in docList)
@@ -44,9 +44,9 @@ namespace Tests
             var dataStorageMock = MockDataStorageFactory.GetMock();
             var dataStorage = dataStorageMock.Object;
 
-            var appointmentService = new AppointmentService(dataStorage);
+            var dataUtilsService = new DataUtilsService(dataStorage);
 
-            var foundDoctors = appointmentService.FindMoreFreeDoctors().ToList();
+            var foundDoctors = dataUtilsService.FindMoreFreeDoctors().ToList();
             Assert.AreEqual(foundDoctors.Count(), 2);
             Assert.AreEqual(foundDoctors[0].Name, "B");
             Assert.AreEqual(foundDoctors[1].Name, "A");

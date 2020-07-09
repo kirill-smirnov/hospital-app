@@ -15,12 +15,12 @@ namespace App.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IDataStorage DataStorage;
-        private readonly IAppointmentService AppointmentService;
+        private readonly IDataUtilsService DataUtilsService;
 
-        public AppointmentController(IDataStorage dataStorage, IAppointmentService appointmentService)
+        public AppointmentController(IDataStorage dataStorage, IDataUtilsService dataUtilsService)
         {
             DataStorage = dataStorage;
-            AppointmentService = appointmentService;
+            DataUtilsService = dataUtilsService;
         }
 
         [HttpPost]
@@ -42,14 +42,14 @@ namespace App.Controllers
 
             if (!string.IsNullOrEmpty(doctorId))
             {
-                var doctor = DataStorage.GetDoctor(doctorId);
-                query = AppointmentService.GetAppointments(doctor);
+                var doctor = DataUtilsService.GetDoctor(doctorId);
+                query = DataUtilsService.GetAppointments(doctor);
             }
 
             else if (!string.IsNullOrEmpty(patientId))
             {
-                var patient = DataStorage.GetPatient(patientId);
-                query = AppointmentService.GetAppointments(patient);
+                var patient = DataUtilsService.GetPatient(patientId);
+                query = DataUtilsService.GetAppointments(patient);
             }
 
             else

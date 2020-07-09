@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core;
 using Core.Models;
+using Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,9 +15,11 @@ namespace App.Controllers
     public class DoctorController : ControllerBase
     {
         private readonly IDataStorage DataStorage;
-        public DoctorController(IDataStorage dataStorage)
+        private readonly IDataUtilsService DataUtilsService;
+        public DoctorController(IDataStorage dataStorage, IDataUtilsService dataUtilsService)
         {
             DataStorage = dataStorage;
+            DataUtilsService = dataUtilsService;
         }
 
         [HttpGet]
@@ -28,7 +31,7 @@ namespace App.Controllers
         [HttpGet("{id}")]
         public Doctor Get(string id)
         {
-            return DataStorage.GetDoctor(id);
+            return DataUtilsService.GetDoctor(id);
         }
 
         [HttpPost]
@@ -46,7 +49,7 @@ namespace App.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            var doctor = DataStorage.GetDoctor(id);
+            var doctor = DataUtilsService.GetDoctor(id);
             DataStorage.DeleteDoctor(doctor);
         }
     }

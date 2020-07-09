@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Services
 {
-    public interface IAppointmentService
+    public interface IDataUtilsService
     {
         IEnumerable<Appointment> GetAppointments(Doctor doctor);
         IEnumerable<Appointment> GetAppointments(Patient patient);

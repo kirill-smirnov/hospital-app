@@ -27,9 +27,9 @@ namespace App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IDataStorage, OfflineDataStorage>();
-            services.AddSingleton<IAppointmentService, AppointmentService>(serviceProvider =>
+            services.AddSingleton<IDataUtilsService, DataUtilsService>(serviceProvider =>
             {
-                return new AppointmentService(serviceProvider.GetService<IDataStorage>());
+                return new DataUtilsService(serviceProvider.GetService<IDataStorage>());
             });
             services.AddControllers();
 

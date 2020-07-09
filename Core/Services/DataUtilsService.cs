@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Core.Services
 {
-    public class AppointmentService : IAppointmentService
+    public class DataUtilsService : IDataUtilsService
     {
         protected IDataStorage DataStorage { get; }
-        public AppointmentService(IDataStorage service)
+        public DataUtilsService(IDataStorage service)
         {
             DataStorage = service;
         }        

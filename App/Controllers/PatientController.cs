@@ -15,12 +15,12 @@ namespace App.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IDataStorage DataStorage;
-        private readonly IAppointmentService AppointmentService;
+        private readonly IDataUtilsService DataUtilsService;
 
-        public PatientController(IDataStorage dataStorage, IAppointmentService appointmentService)
+        public PatientController(IDataStorage dataStorage, IDataUtilsService dataUtilsService)
         {
             DataStorage = dataStorage;
-            AppointmentService = appointmentService;
+            DataUtilsService = dataUtilsService;
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace App.Controllers
         [HttpGet("{id}")]
         public Patient Get(string id)
         {
-            return AppointmentService.GetPatient(id);
+            return DataUtilsService.GetPatient(id);
         }
 
 
@@ -51,7 +51,7 @@ namespace App.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            var patient = AppointmentService.GetPatient(id);
+            var patient = DataUtilsService.GetPatient(id);
             DataStorage.DeletePatient(patient);
         }
     }
