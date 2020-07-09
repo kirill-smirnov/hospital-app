@@ -8,10 +8,13 @@ namespace Core
 {
     public interface IDataStorage {
         IQueryable<Patient> GetPatients();
-        IQueryable<Doctor> GetDoctors();
-        IQueryable<Appointment> GetAppointments();
         Patient GetPatient(string id);
+        void CreatePatient(Patient patient);
+        void UpdatePatient(Patient patient);
+        void DeletePatient(Patient patient);
+        IQueryable<Doctor> GetDoctors();
         Doctor GetDoctor(string id);
+        IQueryable<Appointment> GetAppointments();
         Appointment GetAppointment(string id);
         void CreateAppointment(Appointment appointment);
         void UpdateAppointment(Appointment appointment);

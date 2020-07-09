@@ -69,6 +69,26 @@ namespace Core.Services
             return Patients.FirstOrDefault(p => p.Id == id);
         }
 
+        public void CreatePatient(Patient patient)
+        {
+            Patients = Patients.Concat(new List<Patient> { patient });
+        }
+
+        public void UpdatePatient(Patient patient)
+        {
+            var patToUpdate = GetPatient(patient.Id);
+
+            if (patToUpdate == null)
+                return;
+
+            Patients = Patients.Select(p => p == patToUpdate ? patient : p);
+        }
+
+        public void DeletePatient(Patient patient)
+        {
+            Patients = Patients.Where(p => p != patient);
+        }
+
         public void CreateAppointment(Appointment appointment)
         {
             Appointments = Appointments.Concat(new List<Appointment> { appointment });
