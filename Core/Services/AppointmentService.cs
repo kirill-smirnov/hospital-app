@@ -32,5 +32,15 @@ namespace Core.Services
                 }).OrderBy(app => app.Length)
                 .Select(app => app.Doctor);
         }
+
+        public Patient GetPatient(string id)
+        {
+            return DataStorage.GetPatients().FirstOrDefault(p => p.Id == id);
+        }
+
+        public Doctor GetDoctor(string id)
+        {
+            return DataStorage.GetDoctors().FirstOrDefault(d => d.Id == id);
+        }
     }
 }

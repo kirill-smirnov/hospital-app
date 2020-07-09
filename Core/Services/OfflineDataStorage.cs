@@ -45,11 +45,6 @@ namespace Core.Services
             return Doctors;
         }
 
-        public Doctor GetDoctor(string id)
-        {
-            return Doctors.FirstOrDefault(d => d.Id == id);
-        }
-
         public void CreateDoctor(Doctor doctor)
         {
             Doctors = Doctors.Concat(new List<Doctor> { doctor });
@@ -57,12 +52,7 @@ namespace Core.Services
 
         public void UpdateDoctor(Doctor doctor)
         {
-            var docToUpdate = GetDoctor(doctor.Id);
-
-            if (docToUpdate == null)
-                return;
-
-            Doctors = Doctors.Select(d => d == docToUpdate ? doctor : d);
+            Doctors = Doctors.Select(d => d.Id == doctor.Id ? doctor : d);
         }
 
         public void DeleteDoctor(Doctor doctor)
@@ -75,11 +65,6 @@ namespace Core.Services
             return Patients;
         }
 
-        public Patient GetPatient(string id)
-        {
-            return Patients.FirstOrDefault(p => p.Id == id);
-        }
-
         public void CreatePatient(Patient patient)
         {
             Patients = Patients.Concat(new List<Patient> { patient });
@@ -87,12 +72,7 @@ namespace Core.Services
 
         public void UpdatePatient(Patient patient)
         {
-            var patToUpdate = GetPatient(patient.Id);
-
-            if (patToUpdate == null)
-                return;
-
-            Patients = Patients.Select(p => p == patToUpdate ? patient : p);
+            Patients = Patients.Select(p => p.Id == patient.Id ? patient : p);
         }
 
         public void DeletePatient(Patient patient)

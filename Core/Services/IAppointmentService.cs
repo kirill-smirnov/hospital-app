@@ -10,5 +10,7 @@ namespace Core.Services
         IEnumerable<Appointment> GetAppointments(Doctor doctor);
         IEnumerable<Appointment> GetAppointments(Patient patient);
         IEnumerable<Doctor> FindMoreFreeDoctors();
+        Patient GetPatient(string id);
+        Doctor GetDoctor(string id);
     }
 }
