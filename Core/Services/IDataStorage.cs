@@ -10,6 +10,8 @@ namespace Core
         IQueryable<Patient> GetPatients();
         IQueryable<Doctor> GetDoctors();
         IQueryable<Appointment> GetAppointments();
+        Patient GetPatient(string id);
+        Doctor GetDoctor(string id);
         Appointment GetAppointment(string id);
         void CreateAppointment(Appointment appointment);
         void UpdateAppointment(Appointment appointment);
