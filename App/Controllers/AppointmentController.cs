@@ -42,13 +42,13 @@ namespace App.Controllers
 
             if (!string.IsNullOrEmpty(doctorId))
             {
-                var doctor = DataStorage.GetDoctors().FirstOrDefault(d => d.Id == doctorId);
+                var doctor = DataStorage.GetDoctor(doctorId);
                 query = AppointmentService.GetAppointments(doctor);
             }
 
             else if (!string.IsNullOrEmpty(patientId))
             {
-                var patient = DataStorage.GetPatients().FirstOrDefault(p => p.Id == patientId);
+                var patient = DataStorage.GetPatient(patientId);
                 query = AppointmentService.GetAppointments(patient);
             }
 
@@ -59,6 +59,12 @@ namespace App.Controllers
                 id = a.Id, patientId = a.Patient.Id, doctorId = a.Doctor.Id,
                 start = a.Start, end = a.End, commentary = a.Commentary
             });
+        }
+
+        [HttpGet("{id}")]
+        public Appointment GetAppointment(string id)
+        {
+            return DataStorage.GetAppointment(id);
         }
 
         [HttpPut("{id}")]
