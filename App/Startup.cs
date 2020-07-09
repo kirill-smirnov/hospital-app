@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core;
 using Core.Services;
-using JavaScriptEngineSwitcher.ChakraCore;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.V8;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,12 +31,13 @@ namespace App
             {
                 return new DataUtilsService(serviceProvider.GetService<IDataStorage>());
             });
+
             services.AddControllers();
 
             services.AddMemoryCache();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName).AddV8();
             services.AddReact();
-            services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -46,14 +47,20 @@ namespace App
             app.UseRouting();
             app.UseAuthorization();
 
+            app.UseReact(config => {
+                config
+                    .SetReuseJavaScriptEngines(true)
+                    .SetLoadBabel(false)
+                    .SetLoadReact(false)
+                    .SetReactAppBuildPath("~/dist");
+            });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            app.UseReact(config => { });
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
         }
     }
 }
