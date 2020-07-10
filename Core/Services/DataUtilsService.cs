@@ -6,6 +6,12 @@ using System.Text;
 
 namespace Core.Services
 {
+    public class FilterOptions
+    {
+        public string PatientId { get; set; }
+        public string DoctorId { get; set; }
+    }
+
     public class DataUtilsService : IDataUtilsService
     {
         protected IDataStorage DataStorage { get; }
@@ -41,6 +47,49 @@ namespace Core.Services
         public Doctor GetDoctor(string id)
         {
             return DataStorage.GetDoctors().FirstOrDefault(d => d.Id == id);
+        }
+
+        public IEnumerable<object> GetClientAppointments(FilterOptions options)
+        {
+            IEnumerable<Appointment> query = DataStorage.GetAppointments();
+
+            if (!string.IsNullOrEmpty(options.DoctorId))
+            {
+                var doctor = GetDoctor(options.DoctorId);
+                query = query.Where(appt => appt.Doctor == doctor);
+            }
+
+            else if (!string.IsNullOrEmpty(options.PatientId))
+            {
+                var patient = GetPatient(options.PatientId);
+                query = query.Where(appt => appt.Patient == patient);
+            }
+
+            else
+                query = DataStorage.GetAppointments();
+
+            return query.Select(a => {
+                var doctor = GetDoctor(a.Doctor.Id);
+                var patient = GetPatient(a.Patient.Id);
+
+                return new
+                {
+                    id = a.Id,
+                    patient = new
+                    {
+                        id = patient.Id,
+                        name = patient.Name
+                    },
+                    doctor = new
+                    {
+                        id = doctor.Id,
+                        name = doctor.Name
+                    },
+                    start = a.Start,
+                    end = a.End,
+                    commentary = a.Commentary
+                };
+            });
         }
     }
 }

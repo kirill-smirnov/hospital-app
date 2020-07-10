@@ -33,50 +33,9 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<object> GetAppointments()
+        public IEnumerable<object> GetAppointments([FromQuery] FilterOptions options)
         {
-            IEnumerable<Appointment> query;
-
-            string patientId = HttpContext.Request.Query["patientId"].ToString();
-            string doctorId = HttpContext.Request.Query["doctorId"].ToString();
-
-            if (!string.IsNullOrEmpty(doctorId))
-            {
-                var doctor = DataUtilsService.GetDoctor(doctorId);
-                query = DataUtilsService.GetAppointments(doctor);
-            }
-
-            else if (!string.IsNullOrEmpty(patientId))
-            {
-                var patient = DataUtilsService.GetPatient(patientId);
-                query = DataUtilsService.GetAppointments(patient);
-            }
-
-            else
-                query = DataStorage.GetAppointments();
-
-            return query.Select(a => {
-                var doctor = DataUtilsService.GetDoctor(a.Doctor.Id);
-                var patient = DataUtilsService.GetPatient(a.Patient.Id);
-
-                return new
-                {
-                    id = a.Id,
-                    patient = new
-                    {
-                        id = patient.Id,
-                        name = patient.Name
-                    },
-                    doctor = new
-                    {
-                        id = doctor.Id,
-                        name = doctor.Name
-                    },
-                    start = a.Start,
-                    end = a.End,
-                    commentary = a.Commentary
-                };
-            });
+            return DataUtilsService.GetClientAppointments(options);
         }
 
         [HttpGet("{id}")]

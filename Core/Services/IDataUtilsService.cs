@@ -12,5 +12,6 @@ namespace Core.Services
         IEnumerable<Doctor> FindMoreFreeDoctors();
         Patient GetPatient(string id);
         Doctor GetDoctor(string id);
+        IEnumerable<object> GetClientAppointments(FilterOptions options);
     }
 }
