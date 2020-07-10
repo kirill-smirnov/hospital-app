@@ -8,8 +8,8 @@ class Appointments extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    fetch('https://localhost:5001/api/appointments')
+  async componentDidMount() {
+    await fetch('https://localhost:5001/api/appointments')
       .then(res => res.json())
       .then((data) => {
         this.setState({ appointments: data });
@@ -18,14 +18,14 @@ class Appointments extends React.Component {
   }
 
   render() {
-    let appts = this.state.appointments;
+    let {appointments} = this.state;
 
-    if (appts)
-      return appts.map((appt, index) => {
+    if (appointments)
+      return appointments.map((appt, index) => {
         return <Appointment key={index} data={appt} />;
       });
-    else
-      return (
+
+    return (
         <p>Empty</p>
       );
   }

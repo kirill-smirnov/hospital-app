@@ -10,11 +10,12 @@ class Appointment extends React.Component {
 
   render() {
     let data = this.state.data;
+
     return (
       <div>
         <p> Id: {data.id} </p>
-        <p> Patient id : {data.patientId} </p>
-        <p> Doctor id: {data.doctorId} </p>
+        <p> Patient Name: {data.patient.name} </p>
+        <p> Doctor Name: {data.doctor.name} </p>
         <p> Start time: {data.start} </p>
         <p> End time: {data.end} </p>
         <br />
