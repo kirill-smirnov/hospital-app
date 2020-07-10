@@ -23,7 +23,9 @@ class AppointmentsScheduler extends React.Component {
     return (
       <Scheduler
         dataSource={this.state.appointments}
-        textExpr="id"
+        views= {['day', 'workWeek', 'month']}
+        defaultCurrentView="month"
+        textExpr="patient.name"
         startDateExpr="start"
         endDateExpr="end" />
   );
