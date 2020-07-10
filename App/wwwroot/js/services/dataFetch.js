@@ -1,5 +1,5 @@
 async function appointmentsFetchAsync() {
-  return await fetch('https://localhost:5001/api/appointments')
+  return await fetch('api/appointments')
       .then(res => res.json())
       .catch(console.log);
 }
