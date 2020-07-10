@@ -55,9 +55,27 @@ namespace App.Controllers
             else
                 query = DataStorage.GetAppointments();
 
-            return query.Select(a => new { 
-                id = a.Id, patientId = a.Patient.Id, doctorId = a.Doctor.Id,
-                start = a.Start, end = a.End, commentary = a.Commentary
+            return query.Select(a => {
+                var doctor = DataUtilsService.GetDoctor(a.Doctor.Id);
+                var patient = DataUtilsService.GetPatient(a.Patient.Id);
+
+                return new
+                {
+                    id = a.Id,
+                    patient = new
+                    {
+                        id = patient.Id,
+                        name = patient.Name
+                    },
+                    doctor = new
+                    {
+                        id = doctor.Id,
+                        name = doctor.Name
+                    },
+                    start = a.Start,
+                    end = a.End,
+                    commentary = a.Commentary
+                };
             });
         }
 
