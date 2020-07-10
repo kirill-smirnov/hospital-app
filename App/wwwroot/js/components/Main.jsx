@@ -1,11 +1,17 @@
 import React from 'react';
 
-import Appointments from './Appointments.jsx';
+import AppointmentsList from './AppointmentsList.jsx';
+import AppointmentsScheduler from './AppointmentsScheduler.jsx';
 
 class Main extends React.Component {
   
   render() {
-    return <Appointments />;
+    return (
+      <div>
+        <AppointmentsScheduler />
+        <AppointmentsList />
+      </div>
+    );
   }
 }
 

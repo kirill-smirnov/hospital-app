@@ -1,20 +1,20 @@
 import React from 'react';
 
+import { appointmentsFetchAsync } from '../services/dataFetch';
+
 import Appointment from './Appointment.jsx';
 
-class Appointments extends React.Component {
+class AppointmentsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   async componentDidMount() {
-    await fetch('https://localhost:5001/api/appointments')
-      .then(res => res.json())
+    await appointmentsFetchAsync()
       .then((data) => {
         this.setState({ appointments: data });
       })
-      .catch(console.log);
   }
 
   render() {
@@ -31,4 +31,4 @@ class Appointments extends React.Component {
   }
 }
 
-export default Appointments;
+export default AppointmentsList;
