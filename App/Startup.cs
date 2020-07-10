@@ -52,7 +52,7 @@ namespace App
                     .SetReuseJavaScriptEngines(true)
                     .SetLoadBabel(false)
                     .SetLoadReact(false)
-                    .SetReactAppBuildPath("~/dist");
+                    .SetReactAppBuildPath("wwwroot/dist");
             });
             app.UseDefaultFiles();
             app.UseStaticFiles();
