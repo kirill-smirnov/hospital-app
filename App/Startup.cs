@@ -4,15 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core;
 using Core.Services;
-using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
-using JavaScriptEngineSwitcher.V8;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using React.AspNet;
 
 namespace App
 {
@@ -32,28 +29,31 @@ namespace App
                 return new DataUtilsService(serviceProvider.GetService<IDataStorage>());
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/api/login");
+                });
+
             services.AddControllers();
 
             services.AddMemoryCache();
-            services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName).AddV8();
-            services.AddReact();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        public void Configure(IApplicationBuilder app)
+        [Obsolete]
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseReact(config => {
-                config
-                    .SetReuseJavaScriptEngines(true)
-                    .SetLoadBabel(false)
-                    .SetLoadReact(false)
-                    .SetReactAppBuildPath("wwwroot/dist");
-            });
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
