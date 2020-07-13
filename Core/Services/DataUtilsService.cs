@@ -98,10 +98,11 @@ namespace Core.Services
                 .FirstOrDefault(p => p.Username == username && p.Password == password);
         }
 
-        public Person GetEmployee(string username, string password)
+        public Person GetEmployee(string username, string password, Role role)
         {
             return DataStorage.GetDoctors()
-                .FirstOrDefault(d => d.Username == username && d.Password == password);
+                .FirstOrDefault(d => d.Username == username && d.Password == password &&
+                                     d.Role == role);
         }
     }
 }

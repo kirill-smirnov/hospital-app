@@ -29,7 +29,7 @@ namespace Core.Services
         {
             Person person = role == Role.Patient ?
                 DataUtilsService.GetPatient(username, password):
-                DataUtilsService.GetEmployee(username, password);
+                DataUtilsService.GetEmployee(username, password, role);
 
             if (person != null)
             {
