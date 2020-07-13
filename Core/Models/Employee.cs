@@ -5,24 +5,17 @@ using System.Text;
 namespace Core.Models
 {
     public enum Position { ReceptionStaff, Nurse, Doctor }
-    public class Employee
+    public class Employee: Person
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
+         public string Name { get; set; }
 
         public Position Position { get; set; }
-
-        public Employee()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
 
         public override bool Equals(object obj)
         {
             return obj is Employee employee &&
                    Id == employee.Id;
         }
-
         public override int GetHashCode()
         {
             return HashCode.Combine(Id);
@@ -31,7 +24,6 @@ namespace Core.Models
 
     public class Doctor: Employee
     {
-        // Position = Position.Doctor
         public Doctor() : base()
         {
             Position = Position.Doctor;
@@ -43,6 +35,17 @@ namespace Core.Models
         {
             Patients.Add(patient);
             patient.Doctor = this;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Doctor doctor &&
+                   Id == doctor.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
         }
     }
 
