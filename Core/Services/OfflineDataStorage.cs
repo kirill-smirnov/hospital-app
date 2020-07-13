@@ -16,25 +16,31 @@ namespace Core.Services
         {
             Patients = (new List<Patient>
             {
-                new Patient { Id = Guid.NewGuid().ToString(), Name = "dsad geer", Height = 170, Weight = 67.6f, PassportInfo = "rehtrg", InsuranceInfo = "5435"},
-                new Patient { Id = Guid.NewGuid().ToString(), Name = "dhdf sdsfs", Height = 150, Weight = 47.6f, PassportInfo = "rg", InsuranceInfo = "5ytrydf5"},
+                new Patient { Name = "dsad geer", Height = 170, Weight = 67.6f, PassportInfo = "rehtrg", InsuranceInfo = "5435",
+                    Username = "P1", Password="123"},
+                new Patient { Name = "dhdf sdsfs", Height = 150, Weight = 47.6f, PassportInfo = "rg", InsuranceInfo = "5ytrydf5",
+                    Username = "P2", Password="qwe"}
             }).AsQueryable();
 
             Doctors = (new List<Doctor>
             {
-                new Doctor { Id = Guid.NewGuid().ToString(), Name = "sadad as asd"},
-                new Doctor { Id = Guid.NewGuid().ToString(), Name = "s sda aasdq"}
+                new Doctor { Name = "sadad as asd"},
+                new Doctor { Name = "s sda aasdq"}
             }).AsQueryable();
 
             Appointments = (new List<Appointment>
             {
-                new Appointment {Id = Guid.NewGuid().ToString(), Patient = Patients.ElementAt(0), 
-                    Doctor = Doctors.ElementAt(0), Start = DateTime.Now.AddDays(1), 
+                new Appointment {
+                    Patient = Patients.ElementAt(0), 
+                    Doctor = Doctors.ElementAt(0), 
+                    Start = DateTime.Now.AddDays(1), 
                     End = DateTime.Now.AddDays(1).AddMinutes(15)},
-                new Appointment {Id = Guid.NewGuid().ToString(), Patient = Patients.ElementAt(0),
+                new Appointment {
+                    Patient = Patients.ElementAt(0),
                     Doctor = Doctors.ElementAt(1), Start = DateTime.Now.AddDays(2), 
                     End = DateTime.Now.AddDays(2).AddMinutes(20)},
-                new Appointment {Id = Guid.NewGuid().ToString(), Patient = Patients.ElementAt(1), 
+                new Appointment {
+                    Patient = Patients.ElementAt(1), 
                     Doctor = Doctors.ElementAt(1), Start = DateTime.Now.AddDays(3), 
                     End = DateTime.Now.AddDays(3).AddMinutes(15)}
             }).AsQueryable();
