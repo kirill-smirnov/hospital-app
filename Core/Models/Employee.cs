@@ -4,12 +4,9 @@ using System.Text;
 
 namespace Core.Models
 {
-    public enum Position { ReceptionStaff, Nurse, Doctor }
     public class Employee: Person
     {
          public string Name { get; set; }
-
-        public Position Position { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -26,7 +23,7 @@ namespace Core.Models
     {
         public Doctor() : base()
         {
-            Position = Position.Doctor;
+            Role = Role.Doctor;
         }
         public List<Patient> Patients { get; set; } = new List<Patient>();
         public Schedule Schedule { get; set; }

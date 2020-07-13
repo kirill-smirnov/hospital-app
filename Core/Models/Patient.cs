@@ -18,6 +18,7 @@ namespace Core.Models
 
         public Patient(): base()
         {
+            Role = Role.Patient;
             Appointments = new List<Appointment>();
         }
 
