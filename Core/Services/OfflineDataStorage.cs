@@ -24,8 +24,8 @@ namespace Core.Services
 
             Doctors = (new List<Doctor>
             {
-                new Doctor { Name = "sadad as asd"},
-                new Doctor { Name = "s sda aasdq"}
+                new Doctor { Name = "sadad as asd", Username = "D1", Password="123"},
+                new Doctor { Name = "s sda aasdq", Username = "D2", Password="asd"}
             }).AsQueryable();
 
             Appointments = (new List<Appointment>
