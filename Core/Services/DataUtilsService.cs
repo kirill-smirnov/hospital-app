@@ -91,5 +91,17 @@ namespace Core.Services
                 };
             });
         }
+
+        public Person GetPatient(string username, string password)
+        {
+            return DataStorage.GetPatients()
+                .FirstOrDefault(p => p.Username == username && p.Password == password);
+        }
+
+        public Person GetEmployee(string username, string password)
+        {
+            return DataStorage.GetDoctors()
+                .FirstOrDefault(d => d.Username == username && d.Password == password);
+        }
     }
 }
