@@ -12,6 +12,11 @@ namespace Core.Models
         public string Password { get; set; }
         public Role Role { get; set; }
 
+        public Person()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public override bool Equals(object obj)
         {
             return obj is Person person &&
