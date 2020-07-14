@@ -79,7 +79,12 @@ namespace App
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseCors(builder => builder.AllowAnyOrigin());
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader();
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
