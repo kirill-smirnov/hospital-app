@@ -25,6 +25,13 @@ namespace Core.Services
         {
             DataUtilsService = service;
         }
+        public ClaimsIdentity GetIdentity(string username, string password, string _role)
+        {
+            var role = (Role)Enum.Parse(typeof(Role), _role);
+
+            return GetIdentity(username, password, role);
+        }
+
         public ClaimsIdentity GetIdentity(string username, string password, Role role)
         {
             Person person = role == Role.Patient ?
@@ -47,5 +54,6 @@ namespace Core.Services
 
             return null;
         }
+    }
     }
 }
