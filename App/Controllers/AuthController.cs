@@ -25,11 +25,18 @@ namespace App.Controllers
             AuthService = authService;
         }
 
+        public class LoginModel
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+
+            public string Role { get; set; }
+        }
 
         [HttpPost("token")]
-        public ActionResult<object> GetToken(string username, string password, Role role)
+        public ActionResult<object> GetToken(LoginModel model)
         {
-            var identity = AuthService.GetIdentity(username, password, role);
+            var identity = AuthService.GetIdentity(model.Username, model.Password, model.Role);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
