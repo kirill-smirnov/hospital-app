@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -9,21 +10,20 @@ namespace Core.Services
 {
     public class AuthOptions
     {
-        public const string ISSUER = "MyAuthServer"; 
-        public const string AUDIENCE = "MyAuthClient";
-        const string KEY = "mysupersecret_secretkey!123";
-        public const int LIFETIME = 1;
-        public static SymmetricSecurityKey GetSymmetricSecurityKey()
-        {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));
-        }
+        public string Issuer { get; set; } 
+        public string Audience { get; set; }
+        public string SecretKey { get; set; }
+        public int Lifetime = 1;
     }
+
     public class AuthService : IAuthService
     {
         protected IDataUtilsService DataUtilsService { get; }
-        public AuthService(IDataUtilsService service)
+        protected AuthOptions AuthOptions { get; }
+        public AuthService(IDataUtilsService service, AuthOptions authOptions)
         {
             DataUtilsService = service;
+            AuthOptions = authOptions;
         }
         public ClaimsIdentity GetIdentity(string username, string password, string _role)
         {
@@ -35,7 +35,7 @@ namespace Core.Services
         public ClaimsIdentity GetIdentity(string username, string password, Role role)
         {
             Person person = role == Role.Patient ?
-                DataUtilsService.GetPatient(username, password):
+                DataUtilsService.GetPatient(username, password) :
                 DataUtilsService.GetEmployee(username, password, role);
 
             if (person != null)
@@ -54,6 +54,25 @@ namespace Core.Services
 
             return null;
         }
-    }
+
+        public string GenerateToken(ClaimsIdentity identity)
+        {
+            var now = DateTime.UtcNow;
+            var symmetricKey = AuthService.GetSymmetricSecurityKey(AuthOptions.SecretKey);
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.Issuer,
+                    audience: AuthOptions.Audience,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.Lifetime)),
+                    signingCredentials: new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256));
+            string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return encodedJwt;
+        }
+        public static SymmetricSecurityKey GetSymmetricSecurityKey(string secretKey)
+        {
+            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace Core.Services
     {
         ClaimsIdentity GetIdentity(string username, string password, string role);
         ClaimsIdentity GetIdentity(string username, string password, Role role);
+        public string GenerateToken(ClaimsIdentity identity);
     }
 }

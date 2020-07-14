@@ -25,6 +25,9 @@ namespace App
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            var authOptions = Configuration.GetSection("jwt")
+                                .Get<AuthOptions>();
+
             services.AddSingleton<IDataStorage, OfflineDataStorage>();
             services.AddSingleton<IDataUtilsService, DataUtilsService>(serviceProvider =>
             {
@@ -32,7 +35,9 @@ namespace App
             });
             services.AddSingleton<IAuthService, AuthService>(serviceProvider =>
             {
-                return new AuthService(serviceProvider.GetService<IDataUtilsService>());
+                var dataUtils = serviceProvider.GetService<IDataUtilsService>();
+
+                return new AuthService(dataUtils, authOptions);
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -42,13 +47,13 @@ namespace App
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidIssuer = authOptions.Issuer,
 
                         ValidateAudience = true,
-                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidAudience = authOptions.Audience,
                         ValidateLifetime = true,
 
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        IssuerSigningKey = AuthService.GetSymmetricSecurityKey(authOptions.SecretKey),
                         ValidateIssuerSigningKey = true,
                     };
                 })
