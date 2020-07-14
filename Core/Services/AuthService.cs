@@ -13,7 +13,7 @@ namespace Core.Services
         public string Issuer { get; set; } 
         public string Audience { get; set; }
         public string SecretKey { get; set; }
-        public int Lifetime = 1;
+        public int LifetimeInMinutes = 1;
     }
 
     public class AuthService : IAuthService
@@ -64,7 +64,7 @@ namespace Core.Services
                     audience: AuthOptions.Audience,
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.Lifetime)),
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LifetimeInMinutes)),
                     signingCredentials: new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256));
             string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
