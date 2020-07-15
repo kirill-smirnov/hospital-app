@@ -88,6 +88,7 @@ namespace App
             {
                 builder
                     .AllowAnyOrigin()
+                    .AllowAnyMethod()
                     .AllowAnyHeader();
             });
             app.UseEndpoints(endpoints =>
