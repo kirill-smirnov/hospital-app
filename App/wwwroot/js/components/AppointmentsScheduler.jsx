@@ -5,34 +5,69 @@ import 'devextreme/dist/css/dx.light.css';
 import Scheduler from 'devextreme-react/Scheduler';
 
 import DoctorSelect from './DoctorSelect.jsx';
-import { appointmentsFetchAsync, doctorsFetchAsync } from '../services/data';
+import authService from '../services/auth.js';
+import * as dataService from '../services/data';
+
+function serialize(data, appointments) {
+  const user = authService.getCurrentUser();
+  return {
+    id: data.id,
+    start: data.start,
+    end: data.end,
+    commentary: data.description,
+    patient: appointments.find(appt => appt.patient.name === data.patient.name).id,
+    doctor: user.id
+  }
+}
 
 class AppointmentsScheduler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       doctors: [],
-      selectedDoctor: ''
+      selectedDoctor: '',
+      permissions: {
+        allowAdding: true,
+        allowDeleting: true,
+        allowResizing: true,
+        allowDragging: true,
+        allowUpdating: true
+      }
     };
   }
 
   onSelectChange(e) {
     const doctorId = e.target.value;
 
-    appointmentsFetchAsync(doctorId)
+    dataService.appointmentsFetchAsync(doctorId)
       .then((data) => {
         this.setState({ appointments: data, selectedDoctor: doctorId });
       })
       //.then(() => this.setState({ selectedDoctor: doctorId }));
   }
 
+  onAppointmentAdded(e) {
+    let data = serialize(e.appointmentData, this.state.appointments);
+    dataService.appointmentCreateAsync(data);
+  }
+
+  onAppointmentUpdated(e) {
+    let data = serialize(e.appointmentData, this.state.appointments);
+    dataService.appointmentUpdateAsync(data);
+  }
+
+  onAppointmentDeleted(e) {
+    let data = serialize(e.appointmentData, this.state.appointments);
+    dataService.appointmentDeleteAsync(data);
+  }
+
   async componentDidMount() {
-    await appointmentsFetchAsync()
+    await dataService.appointmentsFetchAsync()
       .then((data) => {
         this.setState({ appointments: data });
       });
 
-    await doctorsFetchAsync()
+    await dataService.doctorsFetchAsync()
     .then(doctors => {
       this.setState({
         doctors
@@ -49,6 +84,9 @@ class AppointmentsScheduler extends React.Component {
           onChange={this.onSelectChange.bind(this)} />
         <Scheduler
           dataSource={this.state.appointments}
+          onAppointmentAdded={this.onAppointmentAdded.bind(this)}
+          onAppointmentUpdated={this.onAppointmentUpdated.bind(this)}
+          onAppointmentDeleted={this.onAppointmentDeleted.bind(this)}
           views={['day', 'workWeek', 'month']}
           defaultCurrentView="month"
           height={300}
