@@ -18,11 +18,13 @@ namespace App.Controllers
     {
         private readonly IDataStorage DataStorage;
         private readonly IAuthService AuthService;
+        private readonly IDataUtilsService DataUtilsService;
 
-        public AuthController(IDataStorage dataStorage, IAuthService authService)
+        public AuthController(IDataStorage dataStorage, IAuthService authService, IDataUtilsService dataUtilsService)
         {
             DataStorage = dataStorage;
             AuthService = authService;
+            DataUtilsService = dataUtilsService;
         }
 
         public class LoginModel
@@ -44,10 +46,19 @@ namespace App.Controllers
 
             var encodedJwt = AuthService.GenerateToken(identity);
 
+            var id = identity.Name;
+            string role = Enum.GetName(typeof(Role), Role.Patient);
+
+            Person user = model.Role == role ?
+                (Person)DataUtilsService.GetPatient(id) :
+                (Person)DataUtilsService.GetDoctor(id);
+
             return new
             {
                 access_token = encodedJwt,
-                username = identity.Name
+                id = id,
+                username = user.LoginInfo.Username,
+                role = role
             };
         }
     }

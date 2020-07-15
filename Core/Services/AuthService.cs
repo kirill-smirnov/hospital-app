@@ -37,7 +37,7 @@ namespace Core.Services
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.LoginInfo.Username),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Id),
                     new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role.ToString())
                 };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(
