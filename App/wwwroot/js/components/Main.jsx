@@ -1,18 +1,20 @@
 import React from 'react';
+import {Route} from 'react-router-dom';
+import { withStore } from '@spyna/react-store';
 
-import AppointmentsList from './AppointmentsList.jsx';
+
+// import PrivateRoute from './PrivateRoute.jsx';
 import AppointmentsScheduler from './AppointmentsScheduler.jsx';
+import LoginForm from './LoginForm.jsx';
 
-class Main extends React.Component {
-  
-  render() {
-    return (
-      <div>
-        <AppointmentsScheduler />
-        <AppointmentsList />
-      </div>
-    );
-  }
+
+const Main = props => {
+  const user = props.store.get('user');
+  return (
+    <div className="container-md">
+      {user ? <AppointmentsScheduler /> : <LoginForm /> }
+    </div>
+  );
 }
 
-export default Main;
+export default withStore(Main);

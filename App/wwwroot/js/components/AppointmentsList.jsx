@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { appointmentsFetchAsync } from '../services/dataFetch';
+import { appointmentsFetchAsync } from '../services/data';
 
 import Appointment from './Appointment.jsx';
 

@@ -5,7 +5,7 @@ import 'devextreme/dist/css/dx.light.css';
 import Scheduler from 'devextreme-react/Scheduler';
 
 import DoctorSelect from './DoctorSelect.jsx';
-import { appointmentsFetchAsync, doctorsFetchAsync } from '../services/dataFetch';
+import { appointmentsFetchAsync, doctorsFetchAsync } from '../services/data';
 
 class AppointmentsScheduler extends React.Component {
   constructor(props) {
@@ -21,9 +21,9 @@ class AppointmentsScheduler extends React.Component {
 
     appointmentsFetchAsync(doctorId)
       .then((data) => {
-        this.setState({ appointments: data });
+        this.setState({ appointments: data, selectedDoctor: doctorId });
       })
-      .then(() => this.setState({ selectedDoctor: doctorId }));
+      //.then(() => this.setState({ selectedDoctor: doctorId }));
   }
 
   async componentDidMount() {

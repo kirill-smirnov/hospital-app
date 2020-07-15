@@ -1,11 +1,9 @@
-const urlBase = 'https://localhost:5001/api/'
-
-const apiFetch = url => fetch(urlBase + url);
+import apiFetch from './fetch.js';
 
 async function appointmentsFetchAsync(doctorId) {
   const url = doctorId ?
     `appointments?doctorId=${doctorId}`:
-    'appointments'
+    "appointments"
 
   return await apiFetch(url)
       .then(res => res.json())
@@ -13,7 +11,7 @@ async function appointmentsFetchAsync(doctorId) {
 }
 
 async function doctorsFetchAsync() {
-  return await apiFetch('doctors')
+  return await apiFetch("doctors")
       .then(res => res.json())
       .catch(console.log);
 }

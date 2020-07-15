@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Core.Models
 {
-    public class Patient
+    public class Patient: Person
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public int Height { get; set; }
         public float Weight { get; set; }
@@ -17,9 +16,9 @@ namespace Core.Models
         public Doctor Doctor { get; set; }
         public List<Appointment> Appointments { get; set; }
 
-        public Patient()
+        public Patient(): base()
         {
-            Id = Guid.NewGuid().ToString();
+            Role = Role.Patient;
             Appointments = new List<Appointment>();
         }
 
