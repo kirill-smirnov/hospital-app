@@ -17,9 +17,12 @@ class AuthService {
     }).then(res => res.json())
       .then(data => {
         //TODO: add cookie
-        if (data && data.access_token)
+        if (data && data.access_token) {
           that.user = data;
-        return data;
+          return data;
+        }
+        if (data && data.errorText)
+          throw data.errorText;
       })
       .catch(console.log);
   }
