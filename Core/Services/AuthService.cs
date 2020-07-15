@@ -29,11 +29,6 @@ namespace Core.Services
         {
             var role = (Role)Enum.Parse(typeof(Role), _role);
 
-            return GetIdentity(username, password, role);
-        }
-
-        public ClaimsIdentity GetIdentity(string username, string password, Role role)
-        {
             Person person = role == Role.Patient ?
                 DataUtilsService.GetPatient(username, password) :
                 DataUtilsService.GetEmployee(username, password, role);
