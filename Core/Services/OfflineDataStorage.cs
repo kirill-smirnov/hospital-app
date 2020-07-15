@@ -17,15 +17,15 @@ namespace Core.Services
             Patients = (new List<Patient>
             {
                 new Patient { Name = "dsad geer", Height = 170, Weight = 67.6f, PassportInfo = "rehtrg", InsuranceInfo = "5435",
-                    Username = "P1", Password="123"},
+                    LoginInfo = new LoginInfo("P1", "123")},
                 new Patient { Name = "dhdf sdsfs", Height = 150, Weight = 47.6f, PassportInfo = "rg", InsuranceInfo = "5ytrydf5",
-                    Username = "P2", Password="qwe"}
+                    LoginInfo = new LoginInfo("P2", "qwe")}
             }).AsQueryable();
 
             Doctors = (new List<Doctor>
             {
-                new Doctor { Name = "sadad as asd", Username = "D1", Password="123"},
-                new Doctor { Name = "s sda aasdq", Username = "D2", Password="asd"}
+                new Doctor { Name = "sadad as asd", LoginInfo = new LoginInfo("D1", "123")},
+                new Doctor { Name = "s sda aasdq", LoginInfo = new LoginInfo("D2", "asd")}
             }).AsQueryable();
 
             Appointments = (new List<Appointment>
