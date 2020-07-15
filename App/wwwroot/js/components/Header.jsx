@@ -10,7 +10,7 @@ class Header extends React.Component {
 
   render() {
     const user = this.props.store.get('user');
-    if (user && user.username)
+    if (user)
       return <span> Hello, {user.username} </span>
     else
       return <span>Log in, please</span>
