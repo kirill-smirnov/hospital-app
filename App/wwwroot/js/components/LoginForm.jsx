@@ -8,12 +8,13 @@ class LoginForm extends React.Component {
     this.state = {
       username: '',
       password: '',
+      isStaff: ''
     };
   }
 
   handleChange(e) {
     const target = e.target;
-    const value = target.value;
+    const value = target.name === 'isStaff' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -23,16 +24,17 @@ class LoginForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const {username, password} = this.state;
+    const {username, password, isStaff} = this.state;
     authService.loginAsync({
       username: username,
       password:password,
-      role: 'Doctor' })
+      isStaff })
       .then(user => this.props.store.set('user', user))
 
     this.setState({
       username: '',
       password: '',
+      isStaff: ''
     });
   }
 
@@ -56,6 +58,14 @@ class LoginForm extends React.Component {
             value={this.state.password}
             name="password"
             onChange={this.handleChange.bind(this)} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="isStaff">Are you staff?</label>
+          <input 
+          type="checkbox" 
+          name="isStaff" 
+          checked={this.state.isStaff}
+          onChange={this.handleChange.bind(this)} />
         </div>
         <input 
           className="btn btn-primary"

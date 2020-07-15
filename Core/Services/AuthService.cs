@@ -25,13 +25,11 @@ namespace Core.Services
             DataUtilsService = service;
             AuthOptions = authOptions;
         }
-        public ClaimsIdentity GetIdentity(string username, string password, string _role)
+        public ClaimsIdentity GetIdentity(string username, string password, bool isStaff)
         {
-            var role = (Role)Enum.Parse(typeof(Role), _role);
-
-            Person person = role == Role.Patient ?
-                DataUtilsService.GetPatient(username, password) :
-                DataUtilsService.GetEmployee(username, password, role);
+            Person person = isStaff ?
+                DataUtilsService.GetEmployee(username, password):
+                DataUtilsService.GetPatient(username, password);
 
             if (person != null)
             {

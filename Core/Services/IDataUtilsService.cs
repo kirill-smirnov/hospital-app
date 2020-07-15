@@ -13,7 +13,7 @@ namespace Core.Services
         Patient GetPatient(string id);
         Doctor GetDoctor(string id);
         Person GetPatient(string username, string password);
-        Person GetEmployee(string username, string password, Role role);
+        Person GetEmployee(string username, string password);
         IEnumerable<object> GetClientAppointments(FilterOptions options);
     }
 }

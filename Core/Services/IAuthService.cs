@@ -8,7 +8,7 @@ namespace Core.Services
 {
     public interface IAuthService
     {
-        ClaimsIdentity GetIdentity(string username, string password, string role);
+        ClaimsIdentity GetIdentity(string username, string password, bool isStaff);
         public string GenerateToken(ClaimsIdentity identity);
     }
 }

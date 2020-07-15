@@ -32,13 +32,13 @@ namespace App.Controllers
             public string Username { get; set; }
             public string Password { get; set; }
 
-            public string Role { get; set; }
+            public bool IsStaff { get; set; }
         }
 
         [HttpPost("token")]
         public ActionResult<object> GetToken(LoginModel model)
         {
-            var identity = AuthService.GetIdentity(model.Username, model.Password, model.Role);
+            var identity = AuthService.GetIdentity(model.Username, model.Password, model.IsStaff);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -47,18 +47,17 @@ namespace App.Controllers
             var encodedJwt = AuthService.GenerateToken(identity);
 
             var id = identity.Name;
-            string role = Enum.GetName(typeof(Role), Role.Patient);
 
-            Person user = model.Role == role ?
-                (Person)DataUtilsService.GetPatient(id) :
-                (Person)DataUtilsService.GetDoctor(id);
+            Person user = model.IsStaff ?
+                (Person)DataUtilsService.GetDoctor(id) :
+                (Person)DataUtilsService.GetPatient(id);
 
             return new
             {
                 access_token = encodedJwt,
                 id = id,
                 username = user.LoginInfo.Username,
-                role = role
+                role = Enum.GetName(typeof(Role), user.Role)
             };
         }
     }
