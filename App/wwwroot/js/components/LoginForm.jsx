@@ -8,7 +8,7 @@ class LoginForm extends React.Component {
     this.state = {
       username: '',
       password: '',
-      isStaff: ''
+      isStaff: false
     };
   }
 
@@ -34,7 +34,7 @@ class LoginForm extends React.Component {
     this.setState({
       username: '',
       password: '',
-      isStaff: ''
+      isStaff: false
     });
   }
 
