@@ -49,18 +49,32 @@ namespace App.Controllers
         [HttpPut("{id}")]
         public ActionResult<Appointment> UpdateAppointment(string id, Appointment appointment)
         {
-            DataStorage.UpdateAppointment(appointment);
+            var userId = HttpContext.User.Identity.Name;
+            var user = DataUtilsService.GetPerson(userId);
 
-            return Ok(new { Message = "Success" });
+            if (PermissionsService.AllowUpdateAppintment(user, appointment))
+            {
+                DataStorage.UpdateAppointment(appointment);
+                return Ok(new { Message = "Success" });
+            }
+            else
+                return BadRequest(new { ErrorText = "Not Allowed"});
         }
 
         [HttpDelete("{id}")]
         public ActionResult<Appointment> DeleteAppointment(string id)
         {
+            var userId = HttpContext.User.Identity.Name;
+            var user = DataUtilsService.GetPerson(userId);
             var appointment = DataStorage.GetAppointment(id);
-            DataStorage.DeleteAppointment(appointment);
 
-            return Ok(new { Message = "Success" });
+            if (PermissionsService.AllowUpdateAppintment(user, appointment))
+            {
+                DataStorage.DeleteAppointment(appointment);
+                return Ok(new { Message = "Success" });
+            }
+            else
+                return BadRequest(new { ErrorText = "Not Allowed" });
         }
     }
 }
