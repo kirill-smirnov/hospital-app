@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Core;
 using Core.Models;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
+    [Authorize]
     [Route("api/appointments")]
     [ApiController]
     public class AppointmentController : ControllerBase

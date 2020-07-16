@@ -48,9 +48,7 @@ namespace App.Controllers
 
             var id = identity.Name;
 
-            Person user = model.IsStaff ?
-                (Person)DataUtilsService.GetDoctor(id) :
-                (Person)DataUtilsService.GetPatient(id);
+            Person user = DataUtilsService.GetPerson(id);
 
             return new
             {
