@@ -13,7 +13,7 @@ namespace Core.Services
         public string Issuer { get; set; } 
         public string Audience { get; set; }
         public string SecretKey { get; set; }
-        public int LifetimeInMinutes = 1;
+        public int LifetimeInMinutes = 60*24*7;
     }
 
     public class AuthService : IAuthService
