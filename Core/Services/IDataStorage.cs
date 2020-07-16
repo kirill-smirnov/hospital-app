@@ -20,5 +20,6 @@ namespace Core
         void CreateAppointment(Appointment appointment);
         void UpdateAppointment(Appointment appointment);
         void DeleteAppointment(Appointment appointment);
+        IQueryable<Person> GetPeople();
     }
 }
