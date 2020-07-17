@@ -20,11 +20,6 @@ function serialize(data, appointments) {
   }
 }
 
-const AppointmentTooltipRender = (props) => {
-    console.log(props);
-    return <div></div>
-  }
-
 class AppointmentsScheduler extends React.Component {
   constructor(props) {
     super(props);
