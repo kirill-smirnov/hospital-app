@@ -10,5 +10,6 @@ namespace Core.Services
     {
         ClaimsIdentity GetIdentity(string username, string password, bool isStaff);
         public string GenerateToken(ClaimsIdentity identity);
+        public bool ValidateToken(string token);
     }
 }

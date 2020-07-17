@@ -58,5 +58,13 @@ namespace App.Controllers
                 role = Enum.GetName(typeof(Role), user.Role)
             };
         }
+
+        [HttpPost("token/validate")]
+        public ActionResult<object> ValidateToken([FromBody]string token)
+        {
+            bool isValid = AuthService.ValidateToken(token);
+
+            return new { isValid = isValid };
+        }
     }
 }
