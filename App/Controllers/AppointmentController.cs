@@ -19,6 +19,14 @@ namespace App.Controllers
         private readonly IDataStorage DataStorage;
         private readonly IDataUtilsService DataUtilsService;
 
+        Person currentUser;
+        Person CurrentUser => currentUser ?? (currentUser = CreateCurrentUser());
+        private Person CreateCurrentUser()
+        {
+            var userId = HttpContext.User.Identity.Name;
+            return DataUtilsService.GetPerson(userId);
+        }
+
         public AppointmentController(IDataStorage dataStorage, IDataUtilsService dataUtilsService)
         {
             DataStorage = dataStorage;
@@ -49,32 +57,25 @@ namespace App.Controllers
         [HttpPut("{id}")]
         public ActionResult<Appointment> UpdateAppointment(string id, Appointment appointment)
         {
-            var userId = HttpContext.User.Identity.Name;
-            var user = DataUtilsService.GetPerson(userId);
-
-            if (PermissionsService.AllowUpdateAppintment(user, appointment))
+            if (PermissionsService.AllowEditAppointment(CurrentUser, appointment))
             {
                 DataStorage.UpdateAppointment(appointment);
                 return Ok(new { Message = "Success" });
             }
-            else
-                return BadRequest(new { ErrorText = "Not Allowed"});
+            return BadRequest(new { ErrorText = "Not Allowed"});
         }
 
         [HttpDelete("{id}")]
         public ActionResult<Appointment> DeleteAppointment(string id)
         {
-            var userId = HttpContext.User.Identity.Name;
-            var user = DataUtilsService.GetPerson(userId);
             var appointment = DataStorage.GetAppointment(id);
 
-            if (PermissionsService.AllowUpdateAppintment(user, appointment))
+            if (PermissionsService.AllowEditAppointment(CurrentUser, appointment))
             {
                 DataStorage.DeleteAppointment(appointment);
                 return Ok(new { Message = "Success" });
             }
-            else
-                return BadRequest(new { ErrorText = "Not Allowed" });
+            return BadRequest(new { ErrorText = "Not Allowed" });
         }
     }
 }
