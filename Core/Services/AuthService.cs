@@ -13,7 +13,8 @@ namespace Core.Services
         public string Issuer { get; set; } 
         public string Audience { get; set; }
         public string SecretKey { get; set; }
-        public int LifetimeInMinutes = 1;
+        public int LifetimeInMinutes = 60*24*7;
+        public TokenValidationParameters TokenValidationParameters { get; set; }
     }
 
     public class AuthService : IAuthService
@@ -63,6 +64,21 @@ namespace Core.Services
 
             return encodedJwt;
         }
+
+        public bool ValidateToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(token, AuthOptions.TokenValidationParameters, out SecurityToken validatedToken);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
         public static SymmetricSecurityKey GetSymmetricSecurityKey(string secretKey)
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));

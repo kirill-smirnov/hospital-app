@@ -35,7 +35,20 @@ namespace App.Controllers
             public bool IsStaff { get; set; }
         }
 
-        [HttpPost("token")]
+        private ActionResult<object> CreateUserResponse(string id, string token)
+        {
+            Person user = DataUtilsService.GetPerson(id);
+
+            return new
+            {
+                access_token = token,
+                id = id,
+                username = user.LoginInfo.Username,
+                role = Enum.GetName(typeof(Role), user.Role)
+            };
+        }
+
+        [HttpPost("login")]
         public ActionResult<object> GetToken(LoginModel model)
         {
             var identity = AuthService.GetIdentity(model.Username, model.Password, model.IsStaff);
@@ -48,17 +61,37 @@ namespace App.Controllers
 
             var id = identity.Name;
 
-            Person user = model.IsStaff ?
-                (Person)DataUtilsService.GetDoctor(id) :
-                (Person)DataUtilsService.GetPatient(id);
+            return CreateUserResponse(id, encodedJwt);
+        }
 
-            return new
-            {
-                access_token = encodedJwt,
-                id = id,
-                username = user.LoginInfo.Username,
-                role = Enum.GetName(typeof(Role), user.Role)
-            };
+        public class TokenModel
+        {
+            public string Token { get; set; }
+        }
+
+        public class TokenWithIdModel: TokenModel
+        {
+            public string Id { get; set; }
+        }
+
+        [HttpPost("login/cookies")]
+        public ActionResult<object> GetUserByToken(TokenWithIdModel model)
+        {
+            string token = model.Token;
+            bool isValid = AuthService.ValidateToken(token);
+
+            if (isValid)
+                return CreateUserResponse(model.Id, token);
+
+            return new { isValid = false };
+        }
+
+        [HttpPost("token/validate")]
+        public ActionResult<object> ValidateToken(TokenModel tokenModel)
+        {
+            bool isValid = AuthService.ValidateToken(tokenModel.Token);
+
+            return new { isValid = isValid };
         }
     }
 }

@@ -115,5 +115,11 @@ namespace Core.Services
         {
             Appointments = Appointments.Where(app => app != appointment);
         }
+
+        public IQueryable<Person> GetPeople()
+        {
+            return Patients.Select(p => (Person)p)
+                .Concat(Doctors.Select(d => (Person)d));
+        }
     }
 }

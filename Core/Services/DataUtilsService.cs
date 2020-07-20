@@ -18,7 +18,7 @@ namespace Core.Services
         public DataUtilsService(IDataStorage service)
         {
             DataStorage = service;
-        }        
+        }
         public IEnumerable<Appointment> GetAppointments(Doctor doctor)
         {
             return DataStorage.GetAppointments().Where(appointment => appointment.Doctor == doctor);
@@ -102,6 +102,12 @@ namespace Core.Services
         {
             return DataStorage.GetDoctors()
                 .FirstOrDefault(d => d.LoginInfo.Username == username && d.LoginInfo.Password == password);
+        }
+
+        public Person GetPerson(string id)
+        {
+            return DataStorage.GetPeople()
+                .FirstOrDefault(p => p.Id == id);
         }
     }
 }

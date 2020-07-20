@@ -5,17 +5,27 @@ using System.Threading.Tasks;
 using Core;
 using Core.Models;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
+    [Authorize]
     [Route("api/appointments")]
     [ApiController]
     public class AppointmentController : ControllerBase
     {
         private readonly IDataStorage DataStorage;
         private readonly IDataUtilsService DataUtilsService;
+
+        Person currentUser;
+        Person CurrentUser => currentUser ?? (currentUser = CreateCurrentUser());
+        private Person CreateCurrentUser()
+        {
+            var userId = HttpContext.User.Identity.Name;
+            return DataUtilsService.GetPerson(userId);
+        }
 
         public AppointmentController(IDataStorage dataStorage, IDataUtilsService dataUtilsService)
         {
@@ -47,18 +57,25 @@ namespace App.Controllers
         [HttpPut("{id}")]
         public ActionResult<Appointment> UpdateAppointment(string id, Appointment appointment)
         {
-            DataStorage.UpdateAppointment(appointment);
-
-            return Ok(new { Message = "Success" });
+            if (PermissionsService.AllowEditAppointment(CurrentUser, appointment))
+            {
+                DataStorage.UpdateAppointment(appointment);
+                return Ok(new { Message = "Success" });
+            }
+            return BadRequest(new { ErrorText = "Not Allowed"});
         }
 
         [HttpDelete("{id}")]
         public ActionResult<Appointment> DeleteAppointment(string id)
         {
             var appointment = DataStorage.GetAppointment(id);
-            DataStorage.DeleteAppointment(appointment);
 
-            return Ok(new { Message = "Success" });
+            if (PermissionsService.AllowEditAppointment(CurrentUser, appointment))
+            {
+                DataStorage.DeleteAppointment(appointment);
+                return Ok(new { Message = "Success" });
+            }
+            return BadRequest(new { ErrorText = "Not Allowed" });
         }
     }
 }

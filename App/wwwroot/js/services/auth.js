@@ -35,6 +35,10 @@ class AuthService {
     //TODO: cookie
     return this.user;
   }
+
+  getToken() {
+    return this.user.access_token;
+  }
 }
 
 const authService = new AuthService();

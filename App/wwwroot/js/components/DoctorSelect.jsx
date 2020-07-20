@@ -1,3 +1,5 @@
+import React from 'react';
+
 const DoctorSelect = (props) => {
   const {value, onChange, data} = props;
   return (

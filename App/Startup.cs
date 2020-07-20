@@ -28,6 +28,18 @@ namespace App
             var authOptions = Configuration.GetSection("jwt")
                                 .Get<AuthOptions>();
 
+            authOptions.TokenValidationParameters =  new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = authOptions.Issuer,
+
+                ValidateAudience = true,
+                ValidAudience = authOptions.Audience,
+                ValidateLifetime = true,
+
+                IssuerSigningKey = AuthService.GetSymmetricSecurityKey(authOptions.SecretKey),
+                ValidateIssuerSigningKey = true,
+            };
             services.AddSingleton<IDataStorage, OfflineDataStorage>();
             services.AddSingleton<IDataUtilsService, DataUtilsService>(serviceProvider =>
             {
@@ -44,18 +56,7 @@ namespace App
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = authOptions.Issuer,
-
-                        ValidateAudience = true,
-                        ValidAudience = authOptions.Audience,
-                        ValidateLifetime = true,
-
-                        IssuerSigningKey = AuthService.GetSymmetricSecurityKey(authOptions.SecretKey),
-                        ValidateIssuerSigningKey = true,
-                    };
+                    options.TokenValidationParameters = authOptions.TokenValidationParameters;
                 })
                 .AddCookie(options =>
                 {

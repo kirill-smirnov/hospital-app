@@ -13,11 +13,7 @@ export async function appointmentsFetchAsync(doctorId) {
 export async function appointmentCreateAsync(appointment) {
   return await apiFetch("appointments", {
     method:"POST",
-      body: JSON.stringify(appointment),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      }
+      body: JSON.stringify(appointment)
   }).then(res => res.json())
     .catch(console.log);
 }
@@ -25,22 +21,14 @@ export async function appointmentCreateAsync(appointment) {
 export async function appointmentUpdateAsync(appointment) {
   return await apiFetch("appointments/"+appointment.id, {
     method:"PUT",
-      body: JSON.stringify(appointment),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      }
+      body: JSON.stringify(appointment)
   }).then(res => res.json())
     .catch(console.log);
 }
 
 export async function appointmentDeleteAsync(appointment) {
   return await apiFetch("appointments/"+appointment.id, {
-    method:"DELETE",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      }
+    method:"DELETE"
   }).then(res => res.json())
     .catch(console.log);
 }
